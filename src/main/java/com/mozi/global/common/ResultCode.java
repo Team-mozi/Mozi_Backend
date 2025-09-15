@@ -30,10 +30,10 @@ public enum ResultCode {  // enum 분리
 
 
     private final String code;
-    private final String msg;
+    private final String message;
 
-    ResultCode(String code, String msg) {
+    ResultCode(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 }

@@ -7,27 +7,27 @@ import lombok.Getter;
 @Getter
 public class ApiResponse <T> {
     private String resultCode;
-    private String msg;
+    private String message;
     private T data;
 
-    public ApiResponse(String resultCode, String msg) {
+    public ApiResponse(String resultCode, String message) {
         this.resultCode = resultCode;
-        this.msg = msg;
+        this.message = message;
         data = null;
     }
 
     // 성공 응답
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), data);
+        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
     // 성공 응답 - data 없음
     public static <T> ApiResponse<T> success() {
-        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), null);
+        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
     }
 
     // 요청 실패 응답
     public static <T> ApiResponse<T> error(ResultCode resultCode) {
-        return new ApiResponse<>(resultCode.getCode(), resultCode.getMsg(), null);
+        return new ApiResponse<>(resultCode.getCode(), resultCode.getMessage(), null);
     }
 }
