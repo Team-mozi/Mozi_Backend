@@ -15,4 +15,14 @@ public class ApiResponse <T> {
         this.msg = msg;
         data = null;
     }
+
+    // 성공 응답
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), data);
+    }
+
+    // 요청 실패 응답
+    public static <T> ApiResponse<T> error(ResultCode resultCode) {
+        return new ApiResponse<>(resultCode.getCode(), resultCode.getMsg(), null);
+    }
 }
