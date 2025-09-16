@@ -7,28 +7,34 @@ import lombok.Getter;
 @Getter
 public class ApiResponse <T> {
 
-    private String resultCode;
+    private String responseCode;
     private String message;
     private T data;
 
-    public ApiResponse(String resultCode, String message) {
-        this.resultCode = resultCode;
-        this.message = message;
-        data = null;
-    }
-
-    // 성공 응답
+    // 성공 응답 (data 있음)
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), data);
+        return new ApiResponse<>(
+                ResponseCode.OK.getCode(),
+                ResponseCode.OK.getMessage(),
+                data
+        );
     }
 
-    // 성공 응답 - data 없음
+    // 성공 응답 (data 없음)
     public static <T> ApiResponse<T> success() {
-        return new ApiResponse<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), null);
+        return new ApiResponse<>(
+                ResponseCode.OK.getCode(),
+                ResponseCode.OK.getMessage(),
+                null
+        );
     }
 
     // 요청 실패 응답
-    public static <T> ApiResponse<T> error(ResponseCode resultCode) {
-        return new ApiResponse<>(resultCode.getCode(), resultCode.getMessage(), null);
+    public static <T> ApiResponse<T> error(ResponseCode responseCode) {
+        return new ApiResponse<>(
+                responseCode.getCode(),
+                responseCode.getMessage(),
+                null
+        );
     }
 }
