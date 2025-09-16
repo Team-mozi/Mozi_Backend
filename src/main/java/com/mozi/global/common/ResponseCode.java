@@ -3,7 +3,7 @@ package com.mozi.global.common;
 import lombok.Getter;
 
 @Getter
-public enum ResultCode {  // enum 분리
+public enum ResponseCode {  // enum 분리
 
     // 성공 응답
     SUCCESS("200", "요청 성공"),
@@ -28,11 +28,10 @@ public enum ResultCode {  // enum 분리
     // 서버 오류
     INTERNAL_SERVER_ERROR("500", "서버 오류가 발생했습니다.");
 
-
     private final String code;
     private final String message;
 
-    ResultCode(String code, String message) {
+    ResponseCode(String code, String message) {
         this.code = code;
         this.message = message;
     }
