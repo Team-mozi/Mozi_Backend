@@ -4,9 +4,8 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ResponseCode {  // enum 분리
+public enum ResponseCode {
 
-    // 공통 (성공/실패)
     OK("200", HttpStatus.OK, "정상적으로 완료되었습니다."),
     CREATED("201", HttpStatus.CREATED, "정상적으로 생성되었습니다."),
     BAD_REQUEST("400", HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
