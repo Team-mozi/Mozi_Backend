@@ -1,4 +1,4 @@
-package com.mozi.global.common;
+package com.mozi.global.response;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.mozi.global.common;
+package com.mozi.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
