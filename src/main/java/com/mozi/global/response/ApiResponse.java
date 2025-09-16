@@ -29,12 +29,13 @@ public class ApiResponse <T> {
         );
     }
 
-    // 요청 실패 응답
-    public static <T> ApiResponse<T> error(ResponseCode responseCode) {
-        return new ApiResponse<>(
-                responseCode.getCode(),
-                responseCode.getMessage(),
-                null
-        );
+    // 요청 실패 응답 (공통)
+    public static <T> ApiResponse<T> error(ResponseCode code) {
+        return new ApiResponse<>(code.getCode(), code.getMessage(), null);
+    }
+
+    // 요청 실패 응답 (도메인별)
+    public static <T> ApiResponse<T> error(ErrorCode code) {
+        return new ApiResponse<>(code.getCode(), code.getMessage(), null);
     }
 }
