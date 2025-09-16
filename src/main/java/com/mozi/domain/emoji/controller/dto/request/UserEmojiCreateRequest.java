@@ -16,6 +16,6 @@ public class UserEmojiCreateRequest {
     @Schema(description = "내용", example = "공부하는중!")
     private String text;
 
-    @Schema(description = "이미지 URL 목록", example = "http://localhost:8080/img1.jpg")
+    @Schema(description = "이미지 URL 목록", example = "[\"http://localhost:8080/image.jpg\"]")
     private List<String> imageUrls;
 }
