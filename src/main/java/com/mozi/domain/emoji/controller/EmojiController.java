@@ -3,7 +3,6 @@ package com.mozi.domain.emoji.controller;
 import com.mozi.domain.emoji.controller.dto.response.EmojiResponse;
 import com.mozi.domain.emoji.controller.dto.response.RepresentativeEmojiResponse;
 import com.mozi.global.response.ApiResponse;
-import com.mozi.global.response.ResponseCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +16,11 @@ public class EmojiController implements EmojiSpecification {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<EmojiResponse>>> getEmojis() {
-        return ResponseEntity.ok(ApiResponse.success(ResponseCode.OK, List.of(new EmojiResponse())));
+        return ResponseEntity.ok(ApiResponse.success(List.of(new EmojiResponse())));
     }
 
     @GetMapping("/representatives")
     public ResponseEntity<ApiResponse<List<RepresentativeEmojiResponse>>> getRepresentativeEmojis() {
-        return ResponseEntity.ok(ApiResponse.success(ResponseCode.OK, List.of(new RepresentativeEmojiResponse())));
+        return ResponseEntity.ok(ApiResponse.success(List.of(new RepresentativeEmojiResponse())));
     }
 }
