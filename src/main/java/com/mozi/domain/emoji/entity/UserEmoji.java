@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class MyEmoji extends BaseEntity {
+public class UserEmoji extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,11 @@ public class MyEmoji extends BaseEntity {
     private String text;
 
 
-    protected MyEmoji() {
+    protected UserEmoji() {
     }
 
     @Builder
-    private MyEmoji(Long userId, Long emojiId, String text) {
+    private UserEmoji(Long userId, Long emojiId, String text) {
         this.userId = userId;
         this.emojiId = emojiId;
         this.text = text;
