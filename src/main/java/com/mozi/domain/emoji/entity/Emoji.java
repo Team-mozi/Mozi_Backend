@@ -13,6 +13,7 @@ public class Emoji extends BaseEntity {
     private Long id;
 
     private String emojiUrl;
+
     private String saveEmojiPath;
 
     @Column(name = "is_representative")
