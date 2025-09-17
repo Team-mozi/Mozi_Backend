@@ -2,12 +2,11 @@ package com.mozi.domain.user.entity;
 
 import com.mozi.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -29,7 +28,10 @@ public class User extends BaseEntity {
     @Column(name = "is_agreed")
     private boolean agreed;
 
-    public  User(String oauthId, String oauthProvider, String email, String password, String nickname) {
+    protected User() {}
+
+    @Builder
+    private  User(String oauthId, String oauthProvider, String email, String password, String nickname) {
         this.oauthId = oauthId;
         this.oauthProvider = oauthProvider;
         this.email = email;
@@ -37,4 +39,5 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.agreed = true;
     }
+
 }
