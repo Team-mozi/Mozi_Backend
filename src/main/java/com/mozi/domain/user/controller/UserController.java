@@ -47,4 +47,18 @@ public class UserController implements UserSpecification{
         // TODO: 닉네임 설정 로직 구현
         return ResponseEntity.ok(ApiResponse.success(new UserResponse()));
     }
+
+    @Override
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout() {
+        // TODO: 로그아웃 로직 구현
+        return ResponseEntity.ok(ApiResponse.success(null));
+    }
+
+    @Override
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestBody UserDeleteRequest request) {
+        // TODO: 회원 탈퇴 로직 구현
+        return ResponseEntity.ok(ApiResponse.success(null));
+    }
 }

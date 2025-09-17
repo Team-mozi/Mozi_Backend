@@ -1,7 +1,5 @@
 package com.mozi.domain.user.controller;
 
-import com.mozi.domain.emoji.controller.dto.response.EmojiResponse;
-import com.mozi.domain.emoji.controller.dto.response.RepresentativeEmojiResponse;
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.RegisterResponse;
@@ -32,6 +30,10 @@ public interface UserSpecification {
     @Operation(summary = "닉네임 설정", description = "로그인한 사용자의 닉네임을 설정합니다. (Access Token 필요)")
     ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(NicknameRequest request);
 
+    @Operation(summary = "로그아웃", description = "사용자의 Access Token을 만료시켜 로그아웃 처리합니다. (Access Token 필요)")
+    ResponseEntity<ApiResponse<Void>> logout();
 
+    @Operation(summary = "회원 탈퇴", description = "현재 로그인된 사용자의 계정을 삭제합니다. (Access Token 필요)")
+    ResponseEntity<ApiResponse<Void>> deleteUser(UserDeleteRequest request);
 
 }
