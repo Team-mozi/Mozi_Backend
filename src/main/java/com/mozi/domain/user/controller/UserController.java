@@ -5,6 +5,7 @@ import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.RegisterResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.global.response.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,37 +14,37 @@ import org.springframework.web.bind.annotation.*;
 public class UserController implements UserSpecification{
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<RegisterResponse>> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request) {
         // TODO: 회원가입 로직 구현
         return ResponseEntity.ok(ApiResponse.success(new RegisterResponse()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
         // TODO: 로그인 로직 구현
         return ResponseEntity.ok(ApiResponse.success(new LoginResponse()));
     }
 
     @PostMapping("/social-login")
-    public ResponseEntity<ApiResponse<LoginResponse>> socialLogin(@RequestBody SocialLoginRequest request) {
+    public ResponseEntity<ApiResponse<LoginResponse>> socialLogin(@Valid @RequestBody SocialLoginRequest request) {
         // TODO: 소셜 로그인 로직 구현
         return  ResponseEntity.ok(ApiResponse.success(new LoginResponse()));
     }
 
     @PostMapping("/email-verifications/send")
-    public ResponseEntity<ApiResponse<Void>> sendVerificationEmail(@RequestBody EmailVerificationRequest request) {
+    public ResponseEntity<ApiResponse<Void>> sendVerificationEmail(@Valid @RequestBody EmailVerificationRequest request) {
         // TODO: 이메일 발송 로직 구현
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
     @PostMapping("/email-verifications/confirm")
-    public ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(@RequestBody EmailVerificationConfirmRequest request) {
+    public ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(@Valid @RequestBody EmailVerificationConfirmRequest request) {
         // TODO: 이메일 인증 코드 검증 로직 구현
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
     @PostMapping("/nickname")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(@RequestBody NicknameRequest request) {
+    public ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(@Valid @RequestBody NicknameRequest request) {
         // TODO: 닉네임 설정 로직 구현
         return ResponseEntity.ok(ApiResponse.success(new UserResponse()));
     }
@@ -55,7 +56,7 @@ public class UserController implements UserSpecification{
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestBody UserDeleteRequest request) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@Valid @RequestBody UserDeleteRequest request) {
         // TODO: 회원 탈퇴 로직 구현
         return ResponseEntity.ok(ApiResponse.success(null));
     }
