@@ -2,7 +2,9 @@ package com.mozi.domain.emoji.entity;
 
 import com.mozi.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Image extends BaseEntity {
 
@@ -14,7 +16,7 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "user_emoji_id")
     private UserEmoji userEmoji;
 
-    private String ImageUrl;
+    private String imageUrl;
 
-    private String SaveImagePath;
+    private String saveImagePath;
 }
