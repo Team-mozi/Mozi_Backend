@@ -4,19 +4,31 @@ import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.RegisterResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
+import com.mozi.domain.user.entity.User;
+import com.mozi.domain.user.service.UserService;
 import com.mozi.global.response.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController implements UserSpecification{
 
+    private final UserService userService;
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request) {
-        // TODO: 회원가입 로직 구현
-        return ResponseEntity.ok(ApiResponse.success(new RegisterResponse()));
+        User user = userService.register(request.getEmail(), request.getPassword());
+
+        RegisterResponse response = RegisterResponse.builder()
+                .userId(user.getId())
+                .email(user.getEmail())
+                .build();
+
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/login")
