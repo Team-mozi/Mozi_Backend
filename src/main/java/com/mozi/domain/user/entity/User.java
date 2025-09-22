@@ -31,13 +31,12 @@ public class User extends BaseEntity {
     protected User() {}
 
     @Builder
-    private  User(String oauthId, String oauthProvider, String email, String password, String nickname) {
+    private  User(String oauthId, String oauthProvider, String email, String password, String nickname, boolean agreed) {
         this.oauthId = oauthId;
         this.oauthProvider = oauthProvider;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.agreed = true;
+        this.agreed = agreed;
     }
-
 }
