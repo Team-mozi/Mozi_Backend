@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    protected Boolean activated = true;
+    protected boolean activated = true;
 
     @CreatedDate
     private LocalDateTime createdDate;

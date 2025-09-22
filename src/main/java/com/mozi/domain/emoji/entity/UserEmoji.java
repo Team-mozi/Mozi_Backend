@@ -22,7 +22,6 @@ public class UserEmoji extends BaseEntity {
 
     private String text;
 
-
     protected UserEmoji() {
     }
 

@@ -24,7 +24,7 @@ public interface UserEmojiSpecification {
     ResponseEntity<ApiResponse<List<RandomUserEmojiResponse>>> getRandomUserEmojis();
 
     @Operation(summary = "내 이모지 생성", description = "새로운 이모지를 생성합니다.")
-    ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request);
+    ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request, Long userId);
 
     @Operation(summary = "내 이모지 삭제", description = "내 이모지를 삭제합니다.")
     ResponseEntity<ApiResponse<Void>> deleteUserEmoji(Long userEmojiId);
