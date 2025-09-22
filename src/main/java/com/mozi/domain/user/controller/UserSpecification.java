@@ -2,7 +2,6 @@ package com.mozi.domain.user.controller;
 
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
-import com.mozi.domain.user.controller.dto.response.RegisterResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 public interface UserSpecification {
 
     @Operation(summary = "회원 가입", description = "회원 정보를 등록합니다.")
-    ResponseEntity<ApiResponse<RegisterResponse>> register(RegisterRequest request);
+    ResponseEntity<ApiResponse<Long>> register(RegisterRequest request);
 
     @Operation(summary = "자체 로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
     ResponseEntity<ApiResponse<LoginResponse>> login(LoginRequest request);

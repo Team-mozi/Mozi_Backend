@@ -2,7 +2,6 @@ package com.mozi.domain.user.controller;
 
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
-import com.mozi.domain.user.controller.dto.response.RegisterResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.service.UserService;
 import com.mozi.global.response.ApiResponse;
@@ -19,9 +18,9 @@ public class UserController implements UserSpecification{
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<RegisterResponse>> register(@Valid @RequestBody RegisterRequest request) {
-        RegisterResponse response = userService.register(request);
-        return ResponseEntity.ok(ApiResponse.create(response));
+    public ResponseEntity<ApiResponse<Long>> register(@Valid @RequestBody RegisterRequest request) {
+        Long userId = userService.register(request);
+        return ResponseEntity.ok(ApiResponse.success(userId));
     }
 
     @PostMapping("/login")
