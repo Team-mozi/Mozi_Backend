@@ -1,5 +1,7 @@
 package com.mozi.domain.user.service;
 
+import com.mozi.domain.user.controller.dto.request.RegisterRequest;
+import com.mozi.domain.user.controller.dto.response.RegisterResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
 import com.mozi.global.exception.BusinessException;
@@ -18,14 +20,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User register(String email, String password) {
+    public RegisterResponse register(RegisterRequest request) {
 
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
         }
 
-        User newUser = User.create(email, password, passwordEncoder);
-
-        return userRepository.save(newUser);
+        User savedUser = userRepository.save(request.toEntity(passwordEncoder));
+        return RegisterResponse.from(savedUser);
     }
 }

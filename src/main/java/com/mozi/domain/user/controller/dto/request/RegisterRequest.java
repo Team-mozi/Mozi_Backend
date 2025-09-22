@@ -1,10 +1,12 @@
 package com.mozi.domain.user.controller.dto.request;
 
+import com.mozi.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 public class RegisterRequest {
@@ -23,4 +25,11 @@ public class RegisterRequest {
     @AssertTrue(message = "서비스 이용을 위해 약관에 동의해야 합니다.")
     private boolean agreed;
 
+    public User toEntity(PasswordEncoder passwordEncoder) {
+        return User.builder()
+                .email(this.email)
+                .password(passwordEncoder.encode(this.password))
+                .agreed(this.agreed)
+                .build();
+    }
 }

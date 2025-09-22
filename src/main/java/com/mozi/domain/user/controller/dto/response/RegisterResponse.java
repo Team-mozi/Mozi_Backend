@@ -1,5 +1,6 @@
 package com.mozi.domain.user.controller.dto.response;
 
+import com.mozi.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,12 +11,14 @@ public class RegisterResponse {
     @Schema(description = "회원 번호", example = "1")
     private Long userId;
 
-    @Schema(description = "이메일", example = "test@example.com")
-    private String email;
-
     @Builder
-    public RegisterResponse(Long userId, String email) {
+    private RegisterResponse(Long userId) {
         this.userId = userId;
-        this.email = email;
+    }
+
+    public static RegisterResponse from(User user) {
+        return RegisterResponse.builder()
+                .userId(user.getId())
+                .build();
     }
 }
