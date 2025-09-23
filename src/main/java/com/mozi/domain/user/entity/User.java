@@ -28,6 +28,12 @@ public class User extends BaseEntity {
     @Column(name = "is_agreed")
     private boolean agreed;
 
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     protected User() {}
 
     @Builder
