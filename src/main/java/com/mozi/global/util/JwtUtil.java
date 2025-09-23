@@ -17,12 +17,15 @@ public class JwtUtil {
 
     private final Key key;
     private final long accessTokenExpirationMillis;
+    private final long refreshTokenExpirationMillis;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey,
-                   @Value("${jwt.access-expiration}") long accessTokenExpirationSeconds) {
+                   @Value("${jwt.access-expiration}") long accessTokenExpirationSeconds,
+                   @Value("${jwt.refresh-expiration}") long refreshTokenExpirationSeconds) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpirationMillis = accessTokenExpirationSeconds * 1000;
+        this.refreshTokenExpirationMillis = refreshTokenExpirationSeconds * 1000;
     }
 
     public String createAccessToken(String email) {
@@ -49,5 +52,17 @@ public class JwtUtil {
             log.warn("Invalid JWT token: {}", e.getMessage());
             return false;
         }
+    }
+
+    public String createRefreshToken(String email) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenExpirationMillis);
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 }

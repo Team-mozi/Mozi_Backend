@@ -34,7 +34,7 @@ public class UserService {
         return savedUser.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
@@ -44,7 +44,29 @@ public class UserService {
         }
 
         String accessToken = jwtUtil.createAccessToken(user.getEmail());
+        String refreshToken = jwtUtil.createRefreshToken(user.getEmail());
 
-        return LoginResponse.from(user, accessToken);
+        user.updateRefreshToken(refreshToken);
+
+        return LoginResponse.from(user, accessToken, refreshToken);
+    }
+
+    @Transactional
+    public String reissueAccessToken(String refreshToken) {
+
+        if (!jwtUtil.validateToken(refreshToken)) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtUtil.getEmail(refreshToken);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        if (!refreshToken.equals(user.getRefreshToken())) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+        }
+
+        return jwtUtil.createAccessToken(email);
     }
 }
