@@ -25,14 +25,21 @@ public class UserController implements UserSpecification{
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
-        // TODO: 로그인 로직 구현
-        return ResponseEntity.ok(ApiResponse.success(new LoginResponse()));
+        LoginResponse response = userService.login(request);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<String>> reissue(@RequestBody TokenRefreshRequest request) {
+        String newAccessToken = userService.reissueAccessToken(request.getRefreshToken());
+        return ResponseEntity.ok(ApiResponse.success(newAccessToken));
     }
 
     @PostMapping("/social-login")
     public ResponseEntity<ApiResponse<LoginResponse>> socialLogin(@Valid @RequestBody SocialLoginRequest request) {
         // TODO: 소셜 로그인 로직 구현
-        return  ResponseEntity.ok(ApiResponse.success(new LoginResponse()));
+        LoginResponse response = LoginResponse.builder().build();
+        return  ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/email-verifications/send")
