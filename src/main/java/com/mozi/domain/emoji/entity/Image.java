@@ -2,6 +2,7 @@ package com.mozi.domain.emoji.entity;
 
 import com.mozi.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -19,4 +20,14 @@ public class Image extends BaseEntity {
     private String imageUrl;
 
     private String saveImagePath;
+
+    protected Image() {
+    }
+
+    @Builder
+    private Image(UserEmoji userEmoji, String imageUrl, String saveImagePath) {
+        this.userEmoji = userEmoji;
+        this.imageUrl = imageUrl;
+        this.saveImagePath = saveImagePath;
+    }
 }

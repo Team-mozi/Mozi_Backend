@@ -8,9 +8,12 @@ import com.mozi.domain.emoji.service.UserEmojiService;
 import com.mozi.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api/user-emojis")
@@ -35,9 +38,11 @@ public class UserEmojiController implements UserEmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(List.of(new RandomUserEmojiResponse())));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createUserEmoji(@Valid @RequestBody UserEmojiCreateRequest request, Long userId) {
-        Long id = userEmojiService.createUserEmoji(request, userId);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Long>> createUserEmoji(@RequestPart("request") @Valid UserEmojiCreateRequest request,
+                                                             @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                                             Long userId) throws IOException {
+        Long id = userEmojiService.createUserEmoji(request, userId, images);
         return ResponseEntity.ok(ApiResponse.success(id));
     }
 
