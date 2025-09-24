@@ -44,6 +44,10 @@ jobs:
         run: |
           echo "${{ secrets.APPLICATION_PROD }}" > src/main/resources/application-prod.properties
 
+      - name: Create application-test.properties
+        run: |
+          echo "${{ secrets.APPLICATION_TEST }}" > src/test/resources/application-test.properties
+
       - name: Build with Gradle
         run: ./gradlew clean build
 
