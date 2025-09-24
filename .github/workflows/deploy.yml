@@ -46,6 +46,7 @@ jobs:
 
       - name: Create application-test.properties
         run: |
+          mkdir -p src/test/resources
           echo "${{ secrets.APPLICATION_TEST }}" > src/test/resources/application-test.properties
 
       - name: Build with Gradle
