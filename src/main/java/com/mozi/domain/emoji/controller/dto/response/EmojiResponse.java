@@ -11,19 +11,19 @@ public class EmojiResponse {
     @Schema(description = "이모지 번호", example = "1")
     private final Long emojiId;
 
-    @Schema(description = "이모지 url", example = "http://localhost:8080/image.jpg")
-    private final String emojiUrl;
+    @Schema(description = "이모지 이름", example = "웃음")
+    private final String name;
 
     @Builder
-    private EmojiResponse(Long emojiId, String emojiUrl) {
+    private EmojiResponse(Long emojiId, String name) {
         this.emojiId = emojiId;
-        this.emojiUrl = emojiUrl;
+        this.name = name;
     }
 
     public static EmojiResponse from(Emoji emoji) {
         return EmojiResponse.builder()
             .emojiId(emoji.getId())
-            .emojiUrl(emoji.getEmojiUrl())
+            .name(emoji.getName())
             .build();
     }
 }
