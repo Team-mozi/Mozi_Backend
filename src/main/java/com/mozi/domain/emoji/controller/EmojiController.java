@@ -1,7 +1,7 @@
 package com.mozi.domain.emoji.controller;
 
+import com.mozi.domain.emoji.controller.dto.response.EmojiHighlightsResponse;
 import com.mozi.domain.emoji.controller.dto.response.EmojiResponse;
-import com.mozi.domain.emoji.controller.dto.response.RepresentativeEmojiResponse;
 import com.mozi.domain.emoji.service.EmojiService;
 import com.mozi.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,8 @@ public class EmojiController implements EmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(emojis));
     }
 
-    @GetMapping("/representatives")
-    public ResponseEntity<ApiResponse<List<RepresentativeEmojiResponse>>> getRepresentativeEmojis() {
-        List<RepresentativeEmojiResponse> representativeEmojis = emojiService.getRepresentativeEmojis();
-        return ResponseEntity.ok(ApiResponse.success(representativeEmojis));
+    @GetMapping("/highlights")
+    public ResponseEntity<ApiResponse<EmojiHighlightsResponse>> getEmojiHighlights() {
+        return ResponseEntity.ok(ApiResponse.success());
     }
 }

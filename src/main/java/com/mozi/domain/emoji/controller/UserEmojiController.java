@@ -24,11 +24,6 @@ public class UserEmojiController implements UserEmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(new UserEmojiDetailResponse()));
     }
 
-    @GetMapping("/random")
-    public ResponseEntity<ApiResponse<List<RandomUserEmojiResponse>>> getRandomUserEmojis() {
-        return ResponseEntity.ok(ApiResponse.success(List.of(new RandomUserEmojiResponse())));
-    }
-
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createUserEmoji(@RequestBody UserEmojiCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.success());

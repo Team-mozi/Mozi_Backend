@@ -20,9 +20,6 @@ public interface UserEmojiSpecification {
     @Operation(summary = "내 이모지 상세 조회", description = "나의 이모지를 상세 조회합니다.")
     ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(Long userEmojiId);
 
-    @Operation(summary = "랜덤 이모지 조회", description = "")
-    ResponseEntity<ApiResponse<List<RandomUserEmojiResponse>>> getRandomUserEmojis();
-
     @Operation(summary = "내 이모지 생성", description = "새로운 이모지를 생성합니다.")
     ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request);
 

@@ -1,7 +1,6 @@
 package com.mozi.domain.emoji.service;
 
 import com.mozi.domain.emoji.controller.dto.response.EmojiResponse;
-import com.mozi.domain.emoji.controller.dto.response.RepresentativeEmojiResponse;
 import com.mozi.domain.emoji.repository.EmojiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,6 @@ public class EmojiService {
         return emojiRepository.findAll()
             .stream()
             .map(EmojiResponse::from)
-            .toList();
-    }
-
-    public List<RepresentativeEmojiResponse> getRepresentativeEmojis() {
-        return emojiRepository.findAllByRepresentativeTrue()
-            .stream()
-            .map(RepresentativeEmojiResponse::from)
             .toList();
     }
 }
