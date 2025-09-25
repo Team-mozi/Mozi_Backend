@@ -28,16 +28,21 @@ public class User extends BaseEntity {
     @Column(name = "is_agreed")
     private boolean agreed;
 
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     protected User() {}
 
     @Builder
-    private  User(String oauthId, String oauthProvider, String email, String password, String nickname) {
+    private  User(String oauthId, String oauthProvider, String email, String password, String nickname, boolean agreed) {
         this.oauthId = oauthId;
         this.oauthProvider = oauthProvider;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.agreed = true;
+        this.agreed = agreed;
     }
-
 }
