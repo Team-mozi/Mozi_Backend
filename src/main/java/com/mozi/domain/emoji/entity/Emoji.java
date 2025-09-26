@@ -12,9 +12,7 @@ public class Emoji extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String emojiUrl;
-
-    private String saveEmojiPath;
+    private String name;
 
     @Column(name = "is_representative")
     private boolean representative;
