@@ -33,11 +33,6 @@ public class UserEmojiController implements UserEmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(new UserEmojiDetailResponse()));
     }
 
-    @GetMapping("/random")
-    public ResponseEntity<ApiResponse<List<RandomUserEmojiResponse>>> getRandomUserEmojis() {
-        return ResponseEntity.ok(ApiResponse.success(List.of(new RandomUserEmojiResponse())));
-    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<Long>> createUserEmoji(@RequestPart("request") @Valid UserEmojiCreateRequest request,
                                                              @RequestPart(value = "images", required = false) List<MultipartFile> images,
