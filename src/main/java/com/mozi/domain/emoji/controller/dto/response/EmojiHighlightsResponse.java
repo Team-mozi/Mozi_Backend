@@ -9,10 +9,10 @@ import java.util.List;
 @Getter
 public class EmojiHighlightsResponse {
 
-    @Schema(description = "랜덤 이모지 리스트", example = "[{\"userEmojiId\": 1, \"emojiId\": \"1\"}]")
+    @Schema(description = "랜덤 이모지 목록", example = "[{\"userEmojiId\": 1, \"emojiId\": \"1\"}]")
     private final List<RandomUserEmojiResponse> randomEmojis;
 
-    @Schema(description = "대표 이모지 리스트", example = "[{\"emojiId\": 1}]")
+    @Schema(description = "대표 이모지 목록", example = "[{\"emojiId\": 1}]")
     private final List<RepresentativeEmojiResponse> representativeEmojis;
 
     @Builder

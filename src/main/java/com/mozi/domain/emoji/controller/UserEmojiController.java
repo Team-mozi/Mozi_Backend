@@ -1,9 +1,7 @@
 package com.mozi.domain.emoji.controller;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
-import com.mozi.domain.emoji.controller.dto.response.RandomUserEmojiResponse;
-import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
-import com.mozi.domain.emoji.controller.dto.response.UserEmojiResponse;
+import com.mozi.domain.emoji.controller.dto.response.*;
 import com.mozi.domain.emoji.service.UserEmojiService;
 import com.mozi.global.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -24,8 +22,13 @@ public class UserEmojiController implements UserEmojiSpecification {
     private final UserEmojiService userEmojiService;
 
     @GetMapping("/latest")
-    public ResponseEntity<ApiResponse<UserEmojiResponse>> getLatestUserEmoji() {
-        return ResponseEntity.ok(ApiResponse.success(new UserEmojiResponse()));
+    public ResponseEntity<ApiResponse<LatestUserEmojiResponse>> getLatestUserEmoji() {
+        return ResponseEntity.ok(ApiResponse.success(new LatestUserEmojiResponse()));
+    }
+
+    @GetMapping("/highlights")
+    public ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights() {
+        return ResponseEntity.ok(ApiResponse.success(new UserEmojiHighlightsResponse()));
     }
 
     @GetMapping("/{userEmojiId}")
