@@ -11,7 +11,7 @@ public class LoginRequest {
     @NotBlank
     private String email;
 
-    @Schema(description = "비밀번호", example = "1234")
+    @Schema(description = "비밀번호", example = "Password123!")
     @NotBlank
     private String password;
 }
