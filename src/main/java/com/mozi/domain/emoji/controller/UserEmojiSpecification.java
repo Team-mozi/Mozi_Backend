@@ -4,6 +4,7 @@ import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
 import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
 import com.mozi.domain.emoji.controller.dto.response.UserEmojiHighlightsResponse;
 import com.mozi.domain.emoji.controller.dto.response.LatestUserEmojiResponse;
+import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +27,7 @@ public interface UserEmojiSpecification {
     ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(Long userEmojiId);
 
     @Operation(summary = "내 이모지 생성", description = "새로운 이모지를 생성합니다.")
-    ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request, List<MultipartFile> images, Long userId) throws IOException;
+    ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request, List<MultipartFile> images, CustomUserDetails userDetails) throws IOException;
 
     @Operation(summary = "내 이모지 삭제", description = "내 이모지를 삭제합니다.")
     ResponseEntity<ApiResponse<Void>> deleteUserEmoji(Long userEmojiId);

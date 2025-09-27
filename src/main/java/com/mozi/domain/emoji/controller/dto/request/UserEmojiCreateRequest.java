@@ -6,26 +6,20 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class UserEmojiCreateRequest {
 
     @NotNull
     @Schema(description = "선택한 이모지 번호", example = "1")
-    private Long emojiId;
+    private final Long emojiId;
 
     @Schema(description = "내용", example = "공부하는중!")
-    private String text;
-
-    @Schema(description = "이미지 URL 목록", example = "[\"http://localhost:8080/image.jpg\"]")
-    private List<String> imageUrls;
+    private final String text;
 
     @Builder
-    private UserEmojiCreateRequest(Long emojiId, String text, List<String> imageUrls) {
+    private UserEmojiCreateRequest(Long emojiId, String text) {
         this.emojiId = emojiId;
         this.text = text;
-        this.imageUrls = imageUrls;
     }
 
     public UserEmoji toEntity(Long userId) {

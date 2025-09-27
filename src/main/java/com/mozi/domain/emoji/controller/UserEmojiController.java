@@ -3,11 +3,13 @@ package com.mozi.domain.emoji.controller;
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
 import com.mozi.domain.emoji.controller.dto.response.*;
 import com.mozi.domain.emoji.service.UserEmojiService;
+import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +41,8 @@ public class UserEmojiController implements UserEmojiSpecification {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<Long>> createUserEmoji(@RequestPart("request") @Valid UserEmojiCreateRequest request,
                                                              @RequestPart(value = "images", required = false) List<MultipartFile> images,
-                                                             Long userId) throws IOException {
-        Long id = userEmojiService.createUserEmoji(request, userId, images);
+                                                             @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+        Long id = userEmojiService.createUserEmoji(request, userDetails.getUserId(), images);
         return ResponseEntity.ok(ApiResponse.success(id));
     }
 
