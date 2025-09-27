@@ -34,6 +34,10 @@ public class User extends BaseEntity {
         this.refreshToken = refreshToken;
     }
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     protected User() {}
 
     @Builder

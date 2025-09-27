@@ -1,14 +1,19 @@
 package com.mozi.domain.user.service;
 
 import com.mozi.domain.user.controller.dto.request.LoginRequest;
+import com.mozi.domain.user.controller.dto.request.NicknameRequest;
 import com.mozi.domain.user.controller.dto.request.RegisterRequest;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
+import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
+import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.exception.BusinessException;
 import com.mozi.global.response.ErrorCode;
 import com.mozi.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,5 +73,25 @@ public class UserService {
         }
 
         return jwtUtil.createAccessToken(email);
+    }
+
+    @Transactional
+    public UserResponse updateNickname(NicknameRequest request) {
+        String nickname = request.getNickname();
+
+        if (userRepository.existsByNickname(nickname)) {
+            throw new BusinessException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long currentUserId = customUserDetails.getUserId();
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        user.updateNickname(nickname);
+
+        return UserResponse.from(user);
     }
 }

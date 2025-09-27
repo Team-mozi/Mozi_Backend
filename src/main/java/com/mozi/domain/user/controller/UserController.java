@@ -56,8 +56,8 @@ public class UserController implements UserSpecification{
 
     @PostMapping("/nickname")
     public ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(@Valid @RequestBody NicknameRequest request) {
-        // TODO: 닉네임 설정 로직 구현
-        return ResponseEntity.ok(ApiResponse.success(new UserResponse()));
+        UserResponse response = userService.updateNickname(request);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/logout")
