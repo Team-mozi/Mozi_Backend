@@ -1,8 +1,10 @@
 package com.mozi.global.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @AllArgsConstructor
 @Getter
 public class ApiResponse <T> {
