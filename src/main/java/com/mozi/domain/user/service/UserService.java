@@ -32,7 +32,7 @@ public class UserService {
     @Transactional
     public Long register(RegisterRequest request) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
         }
 
@@ -42,7 +42,7 @@ public class UserService {
 
     @Transactional
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -66,7 +66,7 @@ public class UserService {
 
         String email = jwtUtil.getEmail(refreshToken);
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmailAndActivatedTrue(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
 
         if (!refreshToken.equals(user.getRefreshToken())) {
@@ -80,47 +80,37 @@ public class UserService {
     public UserResponse updateNickname(NicknameRequest request) {
         String nickname = request.getNickname();
 
-        if (userRepository.existsByNickname(nickname)) {
+        if (userRepository.existsByNicknameAndActivatedTrue(nickname)) {
             throw new BusinessException(ErrorCode.NICKNAME_ALREADY_EXISTS);
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long currentUserId = customUserDetails.getUserId();
-
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
-
+        User user = findCurrentUser();
         user.updateNickname(nickname);
-
         return UserResponse.from(user);
     }
 
     @Transactional
     public void logout() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long currentUserId = customUserDetails.getUserId();
-
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
-
+        User user = findCurrentUser();
         user.logout();
     }
 
     @Transactional
     public void withdraw(UserWithdrawalRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long currentUserId = customUserDetails.getUserId();
+        User user = findCurrentUser();
 
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
-
-        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BusinessException(ErrorCode.BAD_PASSWORD);
         }
-
         user.withdraw();
+    }
+
+    private User findCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long currentUserId = userDetails.getUserId();
+
+        return userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
     }
 }

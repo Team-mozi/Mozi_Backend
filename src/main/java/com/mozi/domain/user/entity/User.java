@@ -17,12 +17,11 @@ public class User extends BaseEntity {
 
     private String oauthProvider;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String email;
 
     private String password;
 
-    @Column(unique = true)
     private String nickname;
 
     @Column(name = "is_agreed")
