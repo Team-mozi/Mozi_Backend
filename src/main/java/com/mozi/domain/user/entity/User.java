@@ -38,6 +38,10 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
+    public void logout() {
+        this.refreshToken = null;
+    }
+
     protected User() {}
 
     @Builder

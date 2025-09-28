@@ -35,7 +35,9 @@ public interface UserSpecification {
     @Operation(summary = "닉네임 설정", description = "로그인한 사용자의 닉네임을 설정합니다. (Access Token 필요)")
     ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(NicknameRequest request);
 
-    @Operation(summary = "로그아웃", description = "사용자의 Access Token을 만료시켜 로그아웃 처리합니다. (Access Token 필요)")
+    @ApiErrorCodeExamples({NOT_FOUND_MEMBER})
+    @Operation(summary = "로그아웃", description = "사용자의 Refresh Token을 삭제하여 로그아웃 처리합니다. (Access Token 필요)\n" +
+            "\n클라이언트에서는 Access Token과 Refresh Token을 모두 삭제해야 합니다.")
     ResponseEntity<ApiResponse<Void>> logout();
 
     @Operation(summary = "회원 탈퇴", description = "현재 로그인된 사용자의 계정을 삭제합니다. (Access Token 필요)")

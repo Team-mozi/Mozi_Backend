@@ -62,7 +62,7 @@ public class UserController implements UserSpecification{
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {
-        // TODO: 로그아웃 로직 구현
+        userService.logout();
         return ResponseEntity.ok(ApiResponse.success());
     }
 

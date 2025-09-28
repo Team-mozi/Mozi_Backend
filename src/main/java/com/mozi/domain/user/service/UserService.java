@@ -94,4 +94,16 @@ public class UserService {
 
         return UserResponse.from(user);
     }
+
+    @Transactional
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long currentUserId = customUserDetails.getUserId();
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        user.logout();
+    }
 }
