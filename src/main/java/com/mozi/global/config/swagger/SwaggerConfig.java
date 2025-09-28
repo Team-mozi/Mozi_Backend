@@ -19,6 +19,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +71,13 @@ public class SwaggerConfig {
                 boolean excluded = excludedPaths.stream().anyMatch(path::startsWith);
 
                 if (!excluded) {
-                    pathItem.readOperations().forEach(operation ->
-                        operation.addParametersItem(authHeader)
-                    );
+                    pathItem.readOperations().forEach(operation -> {
+                        operation.addParametersItem(authHeader);
+                    });
+                } else {
+                    pathItem.readOperations().forEach(operation -> {
+                        operation.setSecurity(new ArrayList<>());
+                    });
                 }
             });
         };
