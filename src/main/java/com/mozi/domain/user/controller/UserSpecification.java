@@ -31,6 +31,7 @@ public interface UserSpecification {
     @Operation(summary = "이메일 인증 코드 확인", description = "이메일로 발송된 인증 코드를 확인하여 인증을 완료합니다.")
     ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(EmailVerificationConfirmRequest request);
 
+    @ApiErrorCodeExamples({NOT_FOUND_MEMBER, NICKNAME_ALREADY_EXISTS})
     @Operation(summary = "닉네임 설정", description = "로그인한 사용자의 닉네임을 설정합니다. (Access Token 필요)")
     ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(NicknameRequest request);
 
