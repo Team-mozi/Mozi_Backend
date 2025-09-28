@@ -14,12 +14,12 @@ import static com.mozi.global.response.ErrorCode.*;
 @Tag(name = "User", description = "인증 / 회원 API")
 public interface UserSpecification {
 
-    @Operation(summary = "회원 가입", description = "회원 정보를 등록합니다.")
     @ApiErrorCodeExamples({CONFLICT_REGISTER})
+    @Operation(summary = "회원 가입", description = "회원 정보를 등록합니다.")
     ResponseEntity<ApiResponse<Long>> register(RegisterRequest request);
 
-    @Operation(summary = "자체 로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
     @ApiErrorCodeExamples({NOT_FOUND_MEMBER, BAD_CREDENTIAL})
+    @Operation(summary = "자체 로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
     ResponseEntity<ApiResponse<LoginResponse>> login(LoginRequest request);
 
     @Operation(summary = "소셜 로그인", description = "카카오/애플 소셜 계정을 이용해 로그인을 수행합니다.")
