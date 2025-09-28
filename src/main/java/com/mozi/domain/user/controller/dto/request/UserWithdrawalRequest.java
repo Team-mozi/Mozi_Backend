@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class UserDeleteRequest {
+public class UserWithdrawalRequest {
 
-    @Schema(description = "현재 계정의 비밀번호", example = "1234")
+    @Schema(description = "현재 계정의 비밀번호", example = "Password123!")
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 

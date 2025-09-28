@@ -66,9 +66,9 @@ public class UserController implements UserSpecification{
         return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@Valid @RequestBody UserDeleteRequest request) {
-        // TODO: 회원 탈퇴 로직 구현
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> withdraw(@Valid @RequestBody UserWithdrawalRequest request) {
+        userService.withdraw(request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 }

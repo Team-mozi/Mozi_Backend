@@ -42,6 +42,11 @@ public class User extends BaseEntity {
         this.refreshToken = null;
     }
 
+    public void withdraw() {
+        super.unActivated();
+        this.refreshToken = null;
+    }
+
     protected User() {}
 
     @Builder

@@ -40,7 +40,8 @@ public interface UserSpecification {
             "\n클라이언트에서는 Access Token과 Refresh Token을 모두 삭제해야 합니다.")
     ResponseEntity<ApiResponse<Void>> logout();
 
+    @ApiErrorCodeExamples({NOT_FOUND_MEMBER, BAD_PASSWORD})
     @Operation(summary = "회원 탈퇴", description = "현재 로그인된 사용자의 계정을 삭제합니다. (Access Token 필요)")
-    ResponseEntity<ApiResponse<Void>> deleteUser(UserDeleteRequest request);
+    ResponseEntity<ApiResponse<Void>> withdraw(UserWithdrawalRequest request);
 
 }

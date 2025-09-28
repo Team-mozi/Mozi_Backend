@@ -3,6 +3,7 @@ package com.mozi.domain.user.service;
 import com.mozi.domain.user.controller.dto.request.LoginRequest;
 import com.mozi.domain.user.controller.dto.request.NicknameRequest;
 import com.mozi.domain.user.controller.dto.request.RegisterRequest;
+import com.mozi.domain.user.controller.dto.request.UserWithdrawalRequest;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
@@ -105,5 +106,21 @@ public class UserService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
 
         user.logout();
+    }
+
+    @Transactional
+    public void withdraw(UserWithdrawalRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long currentUserId = customUserDetails.getUserId();
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())) {
+            throw new BusinessException(ErrorCode.BAD_PASSWORD);
+        }
+
+        user.withdraw();
     }
 }
