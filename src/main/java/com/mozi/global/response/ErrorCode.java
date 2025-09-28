@@ -16,7 +16,11 @@ public enum ErrorCode {
     NOT_EXIST_PRE_AUTH_CREDENTIAL("U007", HttpStatus.UNAUTHORIZED, "사전 인증 정보가 요청에서 발견되지 않았습니다."),
     SECURITY_INCIDENT("U008", HttpStatus.OK, "비정상적인 로그인 시도가 감지되었습니다."),
     SOCIAL_LOGIN_FAILED("U009", HttpStatus.UNAUTHORIZED, "소셜 로그인 인증에 실패했습니다."),
-    EMAIL_VERIFICATION_FAILED("U010", HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다.");
+    EMAIL_VERIFICATION_FAILED("U010", HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다."),
+
+    // 이모지
+    NOT_FOUND_USER_EMOJI("E001", HttpStatus.NOT_FOUND, "존재하지 않는 유저 이모지입니다."),
+    FORBIDDEN_USER_EMOJI("E002", HttpStatus.FORBIDDEN, "본인 이모지만 삭제할 수 있습니다.");
 
     private final String code;
     private final HttpStatus status;

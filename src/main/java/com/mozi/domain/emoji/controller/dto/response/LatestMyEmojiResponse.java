@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-public class UserEmojiResponse {
+public class LatestMyEmojiResponse {
 
     @Schema(description = "유저 이모지 번호", example = "1")
     private Long userEmojiId;
