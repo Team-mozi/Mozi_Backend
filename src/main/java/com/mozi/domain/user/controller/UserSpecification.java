@@ -23,6 +23,10 @@ public interface UserSpecification {
     @Operation(summary = "자체 로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
     ResponseEntity<ApiResponse<LoginResponse>> login(LoginRequest request);
 
+    @ApiErrorCodeExamples({INVALID_TOKEN, NOT_FOUND_MEMBER})
+    @Operation(summary = "액세스 토큰 재발급", description = "유효한 리프레시 토큰을 통해 새로운 액세스 토큰을 발급받습니다.")
+    ResponseEntity<ApiResponse<String>> reissue(TokenRefreshRequest request);
+
     @Operation(summary = "소셜 로그인", description = "카카오/애플 소셜 계정을 이용해 로그인을 수행합니다.")
     ResponseEntity<ApiResponse<LoginResponse>> socialLogin(SocialLoginRequest request);
 
