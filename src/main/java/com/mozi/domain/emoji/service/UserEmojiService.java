@@ -61,7 +61,7 @@ public class UserEmojiService {
             .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EMOJI));
     }
 
-    private static void validateOwner(Long userId, UserEmoji userEmoji) {
+    private void validateOwner(Long userId, UserEmoji userEmoji) {
         if (!userEmoji.getUserId().equals(userId)) {
             throw new BusinessException(ErrorCode.FORBIDDEN_USER_EMOJI);
         }
