@@ -33,7 +33,7 @@ public class UserEmojiController implements UserEmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(new UserEmojiHighlightsResponse()));
     }
 
-    @GetMapping("/{userEmojiId}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(@PathVariable("userEmojiId") Long userEmojiId) {
         return ResponseEntity.ok(ApiResponse.success(new UserEmojiDetailResponse()));
     }
@@ -46,8 +46,8 @@ public class UserEmojiController implements UserEmojiSpecification {
         return ResponseEntity.ok(ApiResponse.success(id));
     }
 
-    @DeleteMapping("/{userEmojiId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUserEmoji(@PathVariable("userEmojiId") Long userEmojiId,
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteUserEmoji(@PathVariable("id") Long userEmojiId,
                                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
         userEmojiService.deleteUserEmoji(userEmojiId, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success());
