@@ -17,10 +17,10 @@ public class BaseEntity {
     protected boolean activated = true;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedAt;
 
     public void unActivated() {
         this.activated = false;
