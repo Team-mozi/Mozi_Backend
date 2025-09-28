@@ -3,21 +3,24 @@ package com.mozi.domain.user.controller;
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
+import com.mozi.global.config.swagger.ApiErrorCodeExamples;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
+import static com.mozi.global.response.ErrorCode.*;
+
 @Tag(name = "User", description = "인증 / 회원 API")
 public interface UserSpecification {
 
-    @SecurityRequirements()
     @Operation(summary = "회원 가입", description = "회원 정보를 등록합니다.")
+    @ApiErrorCodeExamples({CONFLICT_REGISTER})
     ResponseEntity<ApiResponse<Long>> register(RegisterRequest request);
 
-    @SecurityRequirements()
     @Operation(summary = "자체 로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
+    @ApiErrorCodeExamples({NOT_FOUND_MEMBER, BAD_CREDENTIAL})
     ResponseEntity<ApiResponse<LoginResponse>> login(LoginRequest request);
 
     @SecurityRequirements()
