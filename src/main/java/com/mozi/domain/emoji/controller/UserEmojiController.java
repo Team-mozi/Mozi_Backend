@@ -34,7 +34,7 @@ public class UserEmojiController implements UserEmojiSpecification {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(@PathVariable("userEmojiId") Long userEmojiId) {
+    public ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(@PathVariable("id") Long userEmojiId) {
         return ResponseEntity.ok(ApiResponse.success(new UserEmojiDetailResponse()));
     }
 
