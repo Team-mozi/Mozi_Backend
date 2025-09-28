@@ -30,5 +30,5 @@ public interface UserEmojiSpecification {
     ResponseEntity<ApiResponse<Long>> createUserEmoji(UserEmojiCreateRequest request, List<MultipartFile> images, CustomUserDetails userDetails) throws IOException;
 
     @Operation(summary = "내 이모지 삭제", description = "내 이모지를 삭제합니다.")
-    ResponseEntity<ApiResponse<Void>> deleteUserEmoji(Long userEmojiId);
+    ResponseEntity<ApiResponse<Void>> deleteUserEmoji(Long userEmojiId, CustomUserDetails userDetails);
 }

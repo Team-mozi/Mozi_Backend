@@ -47,7 +47,9 @@ public class UserEmojiController implements UserEmojiSpecification {
     }
 
     @DeleteMapping("/{userEmojiId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUserEmoji(@PathVariable("userEmojiId") Long userEmojiId) {
+    public ResponseEntity<ApiResponse<Void>> deleteUserEmoji(@PathVariable("userEmojiId") Long userEmojiId,
+                                                             @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userEmojiService.deleteUserEmoji(userEmojiId, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success());
     }
 }

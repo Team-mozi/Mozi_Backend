@@ -5,6 +5,8 @@ import com.mozi.domain.emoji.entity.Image;
 import com.mozi.domain.emoji.entity.UserEmoji;
 import com.mozi.domain.emoji.repository.ImageRepository;
 import com.mozi.domain.emoji.repository.UserEmojiRepository;
+import com.mozi.global.exception.BusinessException;
+import com.mozi.global.response.ErrorCode;
 import com.mozi.global.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,5 +46,24 @@ public class UserEmojiService {
         }
 
         return userEmoji.getId();
+    }
+
+    @Transactional
+    public void deleteUserEmoji(Long userEmojiId, Long userId) {
+        UserEmoji userEmoji = getUserEmojiById(userEmojiId);
+        validateOwner(userId, userEmoji);
+
+        userEmojiRepository.deactivateByUserEmojiId(userEmojiId);
+    }
+
+    private UserEmoji getUserEmojiById(Long userEmojiId) {
+        return userEmojiRepository.findById(userEmojiId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EMOJI));
+    }
+
+    private static void validateOwner(Long userId, UserEmoji userEmoji) {
+        if (!userEmoji.getUserId().equals(userId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_USER_EMOJI);
+        }
     }
 }
