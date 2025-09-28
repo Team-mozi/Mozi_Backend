@@ -3,6 +3,7 @@ package com.mozi.domain.user.controller;
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
+import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.config.swagger.ApiErrorCodeExamples;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,15 +34,15 @@ public interface UserSpecification {
 
     @ApiErrorCodeExamples({NOT_FOUND_MEMBER, NICKNAME_ALREADY_EXISTS})
     @Operation(summary = "닉네임 설정", description = "로그인한 사용자의 닉네임을 설정합니다. (Access Token 필요)")
-    ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(NicknameRequest request);
+    ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(NicknameRequest request, CustomUserDetails userDetails);
 
     @ApiErrorCodeExamples({NOT_FOUND_MEMBER})
     @Operation(summary = "로그아웃", description = "사용자의 Refresh Token을 삭제하여 로그아웃 처리합니다. (Access Token 필요)\n" +
             "\n클라이언트에서는 Access Token과 Refresh Token을 모두 삭제해야 합니다.")
-    ResponseEntity<ApiResponse<Void>> logout();
+    ResponseEntity<ApiResponse<Void>> logout(CustomUserDetails userDetails);
 
     @ApiErrorCodeExamples({NOT_FOUND_MEMBER, BAD_PASSWORD})
     @Operation(summary = "회원 탈퇴", description = "현재 로그인된 사용자의 계정을 삭제합니다. (Access Token 필요)")
-    ResponseEntity<ApiResponse<Void>> withdraw(UserWithdrawalRequest request);
+    ResponseEntity<ApiResponse<Void>> withdraw(UserWithdrawalRequest request, CustomUserDetails userDetails);
 
 }

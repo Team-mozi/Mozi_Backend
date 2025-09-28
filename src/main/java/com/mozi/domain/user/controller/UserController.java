@@ -4,10 +4,12 @@ import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.service.UserService;
+import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -55,20 +57,28 @@ public class UserController implements UserSpecification{
     }
 
     @PostMapping("/nickname")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(@Valid @RequestBody NicknameRequest request) {
-        UserResponse response = userService.updateNickname(request);
+    public ResponseEntity<ApiResponse<UserResponse>> updateUserNickname(
+            @Valid @RequestBody NicknameRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        UserResponse response = userService.updateNickname(request, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout() {
-        userService.logout();
+    public ResponseEntity<ApiResponse<Void>> logout(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        userService.logout(userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success());
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity<ApiResponse<Void>> withdraw(@Valid @RequestBody UserWithdrawalRequest request) {
-        userService.withdraw(request);
+    public ResponseEntity<ApiResponse<Void>> withdraw(
+            @Valid @RequestBody UserWithdrawalRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        userService.withdraw(request, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success());
     }
 }

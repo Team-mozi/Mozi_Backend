@@ -8,13 +8,10 @@ import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
-import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.exception.BusinessException;
 import com.mozi.global.response.ErrorCode;
 import com.mozi.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,40 +74,35 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse updateNickname(NicknameRequest request) {
-        String nickname = request.getNickname();
+    public UserResponse updateNickname(NicknameRequest request, Long currentUserId) {
+        String newNickname = request.getNickname();
 
-        if (userRepository.existsByNicknameAndActivatedTrue(nickname)) {
+        if (userRepository.existsByNicknameAndActivatedTrue(newNickname)) {
             throw new BusinessException(ErrorCode.NICKNAME_ALREADY_EXISTS);
         }
 
-        User user = findCurrentUser();
-        user.updateNickname(nickname);
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        user.updateNickname(newNickname);
         return UserResponse.from(user);
     }
 
     @Transactional
-    public void logout() {
-        User user = findCurrentUser();
+    public void logout(Long currentUserId) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
         user.logout();
     }
 
     @Transactional
-    public void withdraw(UserWithdrawalRequest request) {
-        User user = findCurrentUser();
+    public void withdraw(UserWithdrawalRequest request, Long currentUserId) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BusinessException(ErrorCode.BAD_PASSWORD);
         }
         user.withdraw();
-    }
-
-    private User findCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long currentUserId = userDetails.getUserId();
-
-        return userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
     }
 }
