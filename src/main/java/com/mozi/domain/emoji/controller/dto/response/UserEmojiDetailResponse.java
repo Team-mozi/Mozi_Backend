@@ -3,6 +3,7 @@ package com.mozi.domain.emoji.controller.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,4 +23,7 @@ public class UserEmojiDetailResponse {
 
     @Schema(description = "이미지 URL 목록", example = "http://localhost:8080/image.jpg")
     private List<String> imageUrls;
+
+    @Schema(description = "생성 시각", example = "2025-10-21T23:59:59")
+    private LocalDateTime createdAt;
 }

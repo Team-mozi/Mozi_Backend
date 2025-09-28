@@ -16,7 +16,11 @@ public enum ErrorCode {
     EXPIRED_TOKEN("U007", HttpStatus.UNAUTHORIZED, "엑세스 토큰이 만료되었습니다. 토큰을 갱신해주세요."),
     NOT_EXIST_PRE_AUTH_CREDENTIAL("U008", HttpStatus.UNAUTHORIZED, "사전 인증 정보가 요청에서 발견되지 않았습니다."),
     SOCIAL_LOGIN_FAILED("U009", HttpStatus.UNAUTHORIZED, "소셜 로그인 인증에 실패했습니다."),
-    EMAIL_VERIFICATION_FAILED("U010", HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다.");
+    EMAIL_VERIFICATION_FAILED("U010", HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다."),
+
+    // 이모지
+    NOT_FOUND_USER_EMOJI("E001", HttpStatus.NOT_FOUND, "존재하지 않는 유저 이모지입니다."),
+    FORBIDDEN_USER_EMOJI("E002", HttpStatus.FORBIDDEN, "본인 이모지만 삭제할 수 있습니다.");
 
     private final String code;
     private final HttpStatus status;
