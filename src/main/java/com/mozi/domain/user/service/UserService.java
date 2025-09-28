@@ -1,5 +1,7 @@
 package com.mozi.domain.user.service;
 
+import com.mozi.domain.emoji.entity.UserEmoji;
+import com.mozi.domain.emoji.repository.UserEmojiRepository;
 import com.mozi.domain.user.controller.dto.request.LoginRequest;
 import com.mozi.domain.user.controller.dto.request.NicknameRequest;
 import com.mozi.domain.user.controller.dto.request.RegisterRequest;
@@ -8,6 +10,7 @@ import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
+import com.mozi.global.entity.BaseEntity;
 import com.mozi.global.exception.BusinessException;
 import com.mozi.global.response.ErrorCode;
 import com.mozi.global.util.JwtUtil;
@@ -16,11 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final UserEmojiRepository userEmojiRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -104,5 +111,8 @@ public class UserService {
             throw new BusinessException(ErrorCode.BAD_PASSWORD);
         }
         user.withdraw();
+
+        List<UserEmoji> userEmojis = userEmojiRepository.findAllByUserIdAndActivatedTrue(currentUserId);
+        userEmojis.forEach(BaseEntity::unActivated);
     }
 }
