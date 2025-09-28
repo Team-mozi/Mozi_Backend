@@ -15,5 +15,5 @@ public class UserEmojiHighlightsResponse {
     private List<RepresentativeEmojiResponse> representativeEmojis;
 
     @Schema(description = "내 최신 이모지", example = "{\"userEmojiId\": 1, \"userId\": \"1\" \"emojiId\": \"1\"}")
-    private LatestUserEmojiResponse latestUserEmoji;
+    private LatestMyEmojiResponse latestMyEmojiResponse;
 }

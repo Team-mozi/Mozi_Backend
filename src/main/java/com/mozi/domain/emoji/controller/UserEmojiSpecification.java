@@ -1,7 +1,7 @@
 package com.mozi.domain.emoji.controller;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
-import com.mozi.domain.emoji.controller.dto.response.LatestUserEmojiResponse;
+import com.mozi.domain.emoji.controller.dto.response.LatestMyEmojiResponse;
 import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
 import com.mozi.domain.emoji.controller.dto.response.UserEmojiHighlightsResponse;
 import com.mozi.global.config.security.CustomUserDetails;
@@ -21,7 +21,7 @@ import static com.mozi.global.response.ErrorCode.*;
 public interface UserEmojiSpecification {
 
     @Operation(summary = "내 최신 이모지 조회", description = "가장 최근에 올린 나의 이모지를 조회합니다.")
-    ResponseEntity<ApiResponse<LatestUserEmojiResponse>> getLatestUserEmoji();
+    ResponseEntity<ApiResponse<LatestMyEmojiResponse>> getLatestUserEmoji();
 
     @Operation(summary = "메인 화면 조회", description = "대표 이모지 목록과 랜덤 이모지 목록, 내 최신 이모지를 조회합니다.")
     ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights();
