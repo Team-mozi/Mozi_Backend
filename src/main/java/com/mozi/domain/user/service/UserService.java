@@ -88,24 +88,21 @@ public class UserService {
             throw new BusinessException(ErrorCode.NICKNAME_ALREADY_EXISTS);
         }
 
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
-
+        User user = getActivatedUserById(currentUserId);
         user.updateNickname(newNickname);
+
         return UserResponse.from(user);
     }
 
     @Transactional
     public void logout(Long currentUserId) {
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+        User user = getActivatedUserById(currentUserId);
         user.logout();
     }
 
     @Transactional
     public void withdraw(UserWithdrawalRequest request, Long currentUserId) {
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+        User user = getActivatedUserById(currentUserId);
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BusinessException(ErrorCode.BAD_PASSWORD);
@@ -114,5 +111,10 @@ public class UserService {
 
         List<UserEmoji> userEmojis = userEmojiRepository.findAllByUserIdAndActivatedTrue(currentUserId);
         userEmojis.forEach(BaseEntity::unActivated);
+    }
+
+    private User getActivatedUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
     }
 }
