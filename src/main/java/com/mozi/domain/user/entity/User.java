@@ -17,12 +17,11 @@ public class User extends BaseEntity {
 
     private String oauthProvider;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String email;
 
     private String password;
 
-    @Column(unique = true)
     private String nickname;
 
     @Column(name = "is_agreed")
@@ -32,6 +31,19 @@ public class User extends BaseEntity {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void logout() {
+        this.refreshToken = null;
+    }
+
+    public void withdraw() {
+        super.unActivated();
+        this.refreshToken = null;
     }
 
     protected User() {}

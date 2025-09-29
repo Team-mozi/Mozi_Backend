@@ -5,9 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface UserEmojiRepository extends JpaRepository<UserEmoji, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query("update UserEmoji ue set ue.activated = false where ue.id = :userEmojiId")
     void deactivateByUserEmojiId(Long userEmojiId);
+
+    List<UserEmoji> findAllByUserIdAndActivatedTrue(Long userId);
 }
