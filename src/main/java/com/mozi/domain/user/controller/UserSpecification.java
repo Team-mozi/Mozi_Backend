@@ -2,6 +2,7 @@ package com.mozi.domain.user.controller;
 
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
+import com.mozi.domain.user.controller.dto.response.NicknameExistsResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.config.swagger.ApiErrorCodeExamples;
@@ -9,6 +10,7 @@ import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.mozi.global.response.ErrorCode.*;
 
@@ -35,6 +37,9 @@ public interface UserSpecification {
 
     @Operation(summary = "이메일 인증 코드 확인", description = "이메일로 발송된 인증 코드를 확인하여 인증을 완료합니다.")
     ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(EmailVerificationConfirmRequest request);
+
+    @Operation(summary = "닉네임 중복 확인", description = "입력한 닉네임이 사용 가능한지 확인합니다.")
+    ResponseEntity<ApiResponse<NicknameExistsResponse>> checkNicknameDuplicate(@RequestParam("nickname") String nickname);
 
     @ApiErrorCodeExamples({NOT_FOUND_MEMBER, NICKNAME_ALREADY_EXISTS})
     @Operation(summary = "닉네임 설정", description = "로그인한 사용자의 닉네임을 설정합니다. (Access Token 필요)")
