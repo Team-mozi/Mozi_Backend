@@ -2,6 +2,7 @@ package com.mozi.domain.user.controller;
 
 import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
+import com.mozi.domain.user.controller.dto.response.NicknameExistsResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.service.UserService;
 import com.mozi.global.config.security.CustomUserDetails;
@@ -54,6 +55,12 @@ public class UserController implements UserSpecification{
     public ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(@Valid @RequestBody EmailVerificationConfirmRequest request) {
         // TODO: 이메일 인증 코드 검증 로직 구현
         return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @GetMapping("/nickname/exists")
+    public ResponseEntity<ApiResponse<NicknameExistsResponse>> checkNicknameDuplicate(@RequestParam("nickname") String nickname) {
+        boolean exists = userService.checkNicknameDuplicate(nickname);
+        return ResponseEntity.ok(ApiResponse.success(new NicknameExistsResponse(exists)));
     }
 
     @PostMapping("/nickname")

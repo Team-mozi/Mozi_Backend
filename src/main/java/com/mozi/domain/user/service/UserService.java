@@ -80,6 +80,11 @@ public class UserService {
         return jwtUtil.createAccessToken(email);
     }
 
+    @Transactional(readOnly = true)
+    public boolean checkNicknameDuplicate(String nickname) {
+        return userRepository.existsByNicknameAndActivatedTrue(nickname);
+    }
+
     @Transactional
     public UserResponse updateNickname(NicknameRequest request, Long currentUserId) {
         String newNickname = request.getNickname();
