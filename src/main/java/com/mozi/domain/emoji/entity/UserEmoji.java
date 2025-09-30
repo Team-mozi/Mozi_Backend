@@ -31,4 +31,12 @@ public class UserEmoji extends BaseEntity {
         this.emojiId = emojiId;
         this.text = text;
     }
+
+    public boolean isOwnedBy(long userId) {
+        return this.userId == userId;
+    }
+
+    public void delete() {
+        this.activated = false;
+    }
 }

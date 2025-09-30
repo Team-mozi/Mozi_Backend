@@ -50,20 +50,18 @@ public class UserEmojiService {
 
     @Transactional
     public void deleteUserEmoji(Long userEmojiId, Long userId) {
-        UserEmoji userEmoji = getUserEmojiById(userEmojiId);
-        validateOwner(userId, userEmoji);
-
-        userEmojiRepository.deactivateByUserEmojiId(userEmojiId);
+        UserEmoji userEmoji = getUserEmojiById(userEmojiId, userId);
+        userEmoji.delete();
     }
 
-    private UserEmoji getUserEmojiById(Long userEmojiId) {
-        return userEmojiRepository.findById(userEmojiId)
+    private UserEmoji getUserEmojiById(Long userEmojiId, Long userId) {
+        UserEmoji userEmoji = userEmojiRepository.findByIdAndActivatedTrue(userEmojiId)
             .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EMOJI));
-    }
 
-    private void validateOwner(Long userId, UserEmoji userEmoji) {
-        if (!userEmoji.getUserId().equals(userId)) {
+        if (!userEmoji.isOwnedBy(userId)) {
             throw new BusinessException(ErrorCode.FORBIDDEN_USER_EMOJI);
         }
+
+        return userEmoji;
     }
 }
