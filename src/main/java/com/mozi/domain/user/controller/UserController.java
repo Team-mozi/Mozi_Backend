@@ -57,6 +57,18 @@ public class UserController implements UserSpecification{
         return ResponseEntity.ok(ApiResponse.success());
     }
 
+    @PostMapping("/password-reset/send-email")
+    public ResponseEntity<ApiResponse<Void>> sendPasswordResetEmail(@Valid @RequestBody EmailVerificationRequest request) {
+        // TODO: 비밀번호 재설정 이메일 발송 로직 구현
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @PostMapping("/password-reset/confirm")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@RequestBody @Valid PasswordResetRequest request) {
+        // TODO: 비밀번호 재설정 로직 구현
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
     @GetMapping("/nickname/exists")
     public ResponseEntity<ApiResponse<NicknameExistsResponse>> checkNicknameDuplicate(@RequestParam("nickname") String nickname) {
         boolean exists = userService.checkNicknameDuplicate(nickname);
