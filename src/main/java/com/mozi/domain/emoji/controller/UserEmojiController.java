@@ -24,8 +24,9 @@ public class UserEmojiController implements UserEmojiSpecification {
     private final UserEmojiService userEmojiService;
 
     @GetMapping("/latest")
-    public ResponseEntity<ApiResponse<LatestMyEmojiResponse>> getLatestUserEmoji() {
-        return ResponseEntity.ok(ApiResponse.success(new LatestMyEmojiResponse()));
+    public ResponseEntity<ApiResponse<LatestMyEmojiResponse>> getLatestUserEmoji(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        LatestMyEmojiResponse latestMyEmoji = userEmojiService.getLatestUserEmoji(userDetails.getUserId());
+        return ResponseEntity.ok(ApiResponse.success(latestMyEmoji));
     }
 
     @GetMapping("/highlights")

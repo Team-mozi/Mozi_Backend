@@ -1,6 +1,7 @@
 package com.mozi.domain.emoji.service;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
+import com.mozi.domain.emoji.controller.dto.response.LatestMyEmojiResponse;
 import com.mozi.domain.emoji.entity.Image;
 import com.mozi.domain.emoji.entity.UserEmoji;
 import com.mozi.domain.emoji.repository.ImageRepository;
@@ -24,6 +25,12 @@ public class UserEmojiService {
     private final UserEmojiRepository userEmojiRepository;
     private final ImageRepository imageRepository;
     private final FileManager fileManager;
+
+    public LatestMyEmojiResponse getLatestUserEmoji(Long userId) {
+        return userEmojiRepository.findFirstByUserIdAndActivatedTrueOrderByCreatedAtDesc(userId)
+            .map(LatestMyEmojiResponse::from)
+            .orElse(null);
+    }
 
     @Transactional
     public Long createUserEmoji(UserEmojiCreateRequest request, Long userId, List<MultipartFile> images) throws IOException {
