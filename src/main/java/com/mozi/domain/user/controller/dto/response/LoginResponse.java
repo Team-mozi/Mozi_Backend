@@ -16,14 +16,10 @@ public class LoginResponse {
     @Schema(description = "회원 번호", example = "1")
     private final Long userId;
 
-    @Schema(description = "닉네임", example = "멋쟁이모지")
-    private final String nickname;
-
     @Builder
-    private LoginResponse(String accessToken, Long userId, String nickname, String refreshToken) {
+    private LoginResponse(String accessToken, Long userId, String refreshToken) {
         this.accessToken = accessToken;
         this.userId = userId;
-        this.nickname = nickname;
         this.refreshToken = refreshToken;
     }
 
@@ -32,7 +28,6 @@ public class LoginResponse {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userId(user.getId())
-                .nickname(user.getNickname())
                 .build();
     }
 }

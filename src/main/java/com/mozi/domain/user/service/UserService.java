@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -81,7 +82,6 @@ public class UserService {
         return jwtUtil.createAccessToken(email);
     }
 
-    @Transactional(readOnly = true)
     public NicknameExistsResponse checkNicknameDuplicate(String nickname) {
         boolean exists = userRepository.existsByNicknameAndActivatedTrue(nickname);
         return NicknameExistsResponse.of(exists);
