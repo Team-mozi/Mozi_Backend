@@ -9,10 +9,10 @@ import lombok.Getter;
 public class UserResponse {
 
     @Schema(description = "회원 번호", example = "1")
-    private Long userId;
+    private final Long userId;
 
     @Schema(description = "닉네임", example = "멋쟁이모지")
-    private String nickname;
+    private final String nickname;
 
     @Builder
     private UserResponse(Long userId, String nickname) {

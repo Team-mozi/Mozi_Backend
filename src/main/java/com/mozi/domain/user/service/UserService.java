@@ -7,6 +7,7 @@ import com.mozi.domain.user.controller.dto.request.NicknameRequest;
 import com.mozi.domain.user.controller.dto.request.RegisterRequest;
 import com.mozi.domain.user.controller.dto.request.UserWithdrawalRequest;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
+import com.mozi.domain.user.controller.dto.response.NicknameExistsResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -78,6 +80,11 @@ public class UserService {
         }
 
         return jwtUtil.createAccessToken(email);
+    }
+
+    public NicknameExistsResponse checkNicknameDuplicate(String nickname) {
+        boolean exists = userRepository.existsByNicknameAndActivatedTrue(nickname);
+        return NicknameExistsResponse.of(exists);
     }
 
     @Transactional
