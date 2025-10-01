@@ -64,7 +64,8 @@ public class SwaggerConfig {
                 "/api/users/login",
                 "/api/users/email-verifications/",
                 "/api/users/reissue",
-                "/api/emojis/highlights"
+                "/api/emojis/highlights",
+                "/api/users/password-reset/"
             );
 
             openApi.getPaths().forEach((path, pathItem) -> {

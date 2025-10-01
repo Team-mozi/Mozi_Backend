@@ -7,6 +7,7 @@ import com.mozi.domain.user.controller.dto.request.NicknameRequest;
 import com.mozi.domain.user.controller.dto.request.RegisterRequest;
 import com.mozi.domain.user.controller.dto.request.UserWithdrawalRequest;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
+import com.mozi.domain.user.controller.dto.response.NicknameExistsResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
@@ -81,8 +82,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkNicknameDuplicate(String nickname) {
-        return userRepository.existsByNicknameAndActivatedTrue(nickname);
+    public NicknameExistsResponse checkNicknameDuplicate(String nickname) {
+        boolean exists = userRepository.existsByNicknameAndActivatedTrue(nickname);
+        return NicknameExistsResponse.of(exists);
     }
 
     @Transactional

@@ -1,10 +1,20 @@
 package com.mozi.domain.user.controller.dto.response;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class NicknameExistsResponse {
-    private boolean exists;
+    private final boolean exists;
+
+    @Builder
+    private NicknameExistsResponse(boolean exists) {
+        this.exists = exists;
+    }
+
+    public static NicknameExistsResponse of(boolean exists) {
+        return NicknameExistsResponse.builder()
+                .exists(exists)
+                .build();
+    }
 }

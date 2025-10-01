@@ -8,7 +8,6 @@ import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.config.swagger.ApiErrorCodeExamples;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,11 +38,9 @@ public interface UserSpecification {
     @Operation(summary = "이메일 인증 코드 확인", description = "이메일로 발송된 인증 코드를 확인하여 인증을 완료합니다.")
     ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(EmailVerificationConfirmRequest request);
 
-    @SecurityRequirements()
     @Operation(summary = "비밀번호 재설정 이메일 발송", description = "비밀번호 재설정을 위해 이메일로 인증 코드를 발송합니다.")
     ResponseEntity<ApiResponse<Void>> sendPasswordResetEmail(EmailVerificationRequest request);
 
-    @SecurityRequirements()
     @Operation(summary = "비밀번호 재설정", description = "이메일 인증 후, 새로운 비밀번호로 재설정합니다.")
     ResponseEntity<ApiResponse<Void>> resetPassword(PasswordResetRequest request);
 

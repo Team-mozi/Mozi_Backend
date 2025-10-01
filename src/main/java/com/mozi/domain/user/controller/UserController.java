@@ -71,8 +71,8 @@ public class UserController implements UserSpecification{
 
     @GetMapping("/nickname/exists")
     public ResponseEntity<ApiResponse<NicknameExistsResponse>> checkNicknameDuplicate(@RequestParam("nickname") String nickname) {
-        boolean exists = userService.checkNicknameDuplicate(nickname);
-        return ResponseEntity.ok(ApiResponse.success(new NicknameExistsResponse(exists)));
+        NicknameExistsResponse response = userService.checkNicknameDuplicate(nickname);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/nickname")
