@@ -9,7 +9,7 @@ import lombok.Getter;
 public class RegisterResponse {
 
     @Schema(description = "회원 번호", example = "1")
-    private Long userId;
+    private final Long userId;
 
     @Builder
     private RegisterResponse(Long userId) {
