@@ -52,7 +52,11 @@ public class UserService {
     }
 
     public void sendVerificationEmail(EmailVerificationRequest request) {
-        // TODO: 이미 가입된 이메일인지 확인하는 로직 구현
+
+        if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
+            throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
+        }
+
         mailSendService.sendEmail(request.getEmail());
     }
 
