@@ -16,4 +16,6 @@ public interface UserEmojiRepository extends JpaRepository<UserEmoji, Long> {
     List<UserEmoji> findAllByUserIdAndActivatedTrue(Long userId);
 
     Optional<UserEmoji> findFirstByUserIdAndActivatedTrueOrderByCreatedAtDesc(@Param("userId") Long userId);
+
+    List<UserEmoji> findTop100ByActivatedTrueOrderByCreatedAtDesc();
 }

@@ -22,7 +22,7 @@ public class RandomUserEmojiResponse {
 
     public static RandomUserEmojiResponse from(UserEmoji userEmoji) {
         return RandomUserEmojiResponse.builder()
-            .userEmojiId(userEmoji.getEmojiId())
+            .userEmojiId(userEmoji.getId())
             .emojiId(userEmoji.getEmojiId())
             .build();
     }

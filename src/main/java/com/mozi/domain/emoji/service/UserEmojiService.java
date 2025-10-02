@@ -1,10 +1,10 @@
 package com.mozi.domain.emoji.service;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
-import com.mozi.domain.emoji.controller.dto.response.LatestMyEmojiResponse;
-import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
+import com.mozi.domain.emoji.controller.dto.response.*;
 import com.mozi.domain.emoji.entity.Image;
 import com.mozi.domain.emoji.entity.UserEmoji;
+import com.mozi.domain.emoji.repository.EmojiRepository;
 import com.mozi.domain.emoji.repository.ImageRepository;
 import com.mozi.domain.emoji.repository.UserEmojiRepository;
 import com.mozi.domain.user.entity.User;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static com.mozi.global.response.ErrorCode.*;
@@ -30,11 +31,38 @@ public class UserEmojiService {
     private final ImageRepository imageRepository;
     private final FileManager fileManager;
     private final UserRepository userRepository;
+    private final EmojiRepository emojiRepository;
 
     public LatestMyEmojiResponse getLatestUserEmoji(Long userId) {
         return userEmojiRepository.findFirstByUserIdAndActivatedTrueOrderByCreatedAtDesc(userId)
             .map(LatestMyEmojiResponse::from)
             .orElse(null);
+    }
+
+    public UserEmojiHighlightsResponse getUserEmojiHighlights(Long currentUserId) {
+        List<UserEmoji> latest = userEmojiRepository.findTop100ByActivatedTrueOrderByCreatedAtDesc();
+
+        Collections.shuffle(latest);
+        List<RandomUserEmojiResponse> randomEmojis = latest.stream()
+            .limit(6)
+            .map(RandomUserEmojiResponse::from)
+            .toList();
+
+        List<RepresentativeEmojiResponse> representativeEmojis =
+            emojiRepository.findAllByRepresentativeTrue().stream()
+                .map(RepresentativeEmojiResponse::from)
+                .toList();
+
+        LatestMyEmojiResponse latestMyEmojiResponse = userEmojiRepository
+            .findFirstByUserIdAndActivatedTrueOrderByCreatedAtDesc(currentUserId)
+            .map(LatestMyEmojiResponse::from)
+            .orElse(null);
+
+        return UserEmojiHighlightsResponse.builder()
+            .randomEmojis(randomEmojis)
+            .representativeEmojis(representativeEmojis)
+            .latestMyEmojiResponse(latestMyEmojiResponse)
+            .build();
     }
 
     public UserEmojiDetailResponse getUserEmojiDetail(Long userEmojiId) {

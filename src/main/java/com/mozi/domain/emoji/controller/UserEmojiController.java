@@ -1,7 +1,9 @@
 package com.mozi.domain.emoji.controller;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
-import com.mozi.domain.emoji.controller.dto.response.*;
+import com.mozi.domain.emoji.controller.dto.response.LatestMyEmojiResponse;
+import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
+import com.mozi.domain.emoji.controller.dto.response.UserEmojiHighlightsResponse;
 import com.mozi.domain.emoji.service.UserEmojiService;
 import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.response.ApiResponse;
@@ -30,8 +32,10 @@ public class UserEmojiController implements UserEmojiSpecification {
     }
 
     @GetMapping("/highlights")
-    public ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights() {
-        return ResponseEntity.ok(ApiResponse.success(new UserEmojiHighlightsResponse()));
+    public ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long currentUserId = userDetails.getUserId();
+        UserEmojiHighlightsResponse response = userEmojiService.getUserEmojiHighlights(currentUserId);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @GetMapping("/{id}")
