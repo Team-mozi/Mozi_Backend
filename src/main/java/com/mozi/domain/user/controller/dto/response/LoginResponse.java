@@ -21,7 +21,7 @@ public class LoginResponse {
     private final String refreshToken;
 
     @Builder
-    private LoginResponse( Long userId, String nickname, String accessToken, String refreshToken) {
+    private LoginResponse(Long userId, String nickname, String accessToken, String refreshToken) {
         this.userId = userId;
         this.nickname = nickname;
         this.accessToken = accessToken;
