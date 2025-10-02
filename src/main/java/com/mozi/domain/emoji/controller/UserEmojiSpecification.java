@@ -15,8 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.mozi.global.response.ErrorCode.FORBIDDEN_USER_EMOJI;
-import static com.mozi.global.response.ErrorCode.NOT_FOUND_USER_EMOJI;
+import static com.mozi.global.response.ErrorCode.*;
 
 @Tag(name = "UserEmoji", description = "유저 이모지 API")
 public interface UserEmojiSpecification {
@@ -27,6 +26,7 @@ public interface UserEmojiSpecification {
     @Operation(summary = "메인 화면 조회", description = "대표 이모지 목록과 랜덤 이모지 목록, 내 최신 이모지를 조회합니다.")
     ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights(CustomUserDetails userDetails);
 
+    @ApiErrorCodeExamples({NOT_FOUND_USER_EMOJI, NOT_FOUND_MEMBER})
     @Operation(summary = "유저 이모지 상세 조회", description = "유저 이모지를 상세 조회합니다.")
     ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(Long userEmojiId);
 
