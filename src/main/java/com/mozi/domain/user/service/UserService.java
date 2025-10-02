@@ -2,17 +2,16 @@ package com.mozi.domain.user.service;
 
 import com.mozi.domain.emoji.entity.UserEmoji;
 import com.mozi.domain.emoji.repository.UserEmojiRepository;
-import com.mozi.domain.user.controller.dto.request.LoginRequest;
-import com.mozi.domain.user.controller.dto.request.NicknameRequest;
-import com.mozi.domain.user.controller.dto.request.RegisterRequest;
-import com.mozi.domain.user.controller.dto.request.UserWithdrawalRequest;
+import com.mozi.domain.user.controller.dto.request.*;
 import com.mozi.domain.user.controller.dto.response.LoginResponse;
 import com.mozi.domain.user.controller.dto.response.NicknameExistsResponse;
 import com.mozi.domain.user.controller.dto.response.UserResponse;
 import com.mozi.domain.user.entity.User;
 import com.mozi.domain.user.repository.UserRepository;
+import com.mozi.global.email.MailSendService;
 import com.mozi.global.entity.BaseEntity;
 import com.mozi.global.exception.BusinessException;
+import com.mozi.global.redis.RedisService;
 import com.mozi.global.response.ErrorCode;
 import com.mozi.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,12 @@ public class UserService {
 
     private final JwtUtil jwtUtil;
 
+    private final MailSendService mailSendService;
+
+    private final RedisService redisService;
+
+    private static final String AUTH_CODE_PREFIX = "AuthCode_";
+
     @Transactional
     public Long register(RegisterRequest request) {
 
@@ -44,6 +49,21 @@ public class UserService {
 
         User savedUser = userRepository.save(request.toEntity(passwordEncoder));
         return savedUser.getId();
+    }
+
+    public void sendVerificationEmail(EmailVerificationRequest request) {
+        // TODO: 이미 가입된 이메일인지 확인하는 로직 구현
+        mailSendService.sendEmail(request.getEmail());
+    }
+
+    public void verifyEmail(EmailVerificationConfirmRequest request) {
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
+
+        if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
+            throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
+        }
+
+        redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
     }
 
     @Transactional

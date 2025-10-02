@@ -47,13 +47,13 @@ public class UserController implements UserSpecification{
 
     @PostMapping("/email-verifications/send")
     public ResponseEntity<ApiResponse<Void>> sendVerificationEmail(@Valid @RequestBody EmailVerificationRequest request) {
-        // TODO: 이메일 발송 로직 구현
+        userService.sendVerificationEmail(request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
     @PostMapping("/email-verifications/confirm")
     public ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(@Valid @RequestBody EmailVerificationConfirmRequest request) {
-        // TODO: 이메일 인증 코드 검증 로직 구현
+        userService.verifyEmail(request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 

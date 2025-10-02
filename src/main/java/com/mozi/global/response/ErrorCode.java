@@ -18,6 +18,9 @@ public enum ErrorCode {
     SOCIAL_LOGIN_FAILED("U009", HttpStatus.UNAUTHORIZED, "소셜 로그인 인증에 실패했습니다."),
     EMAIL_VERIFICATION_FAILED("U010", HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다."),
 
+    // 이메일 인증
+    EMAIL_SEND_FAILED("M001", HttpStatus.INTERNAL_SERVER_ERROR, "인증코드 발송에 실패했습니다."),
+
     // 이모지
     NOT_FOUND_USER_EMOJI("E001", HttpStatus.NOT_FOUND, "존재하지 않는 유저 이모지입니다."),
     FORBIDDEN_USER_EMOJI("E002", HttpStatus.FORBIDDEN, "본인 이모지만 삭제할 수 있습니다.");
