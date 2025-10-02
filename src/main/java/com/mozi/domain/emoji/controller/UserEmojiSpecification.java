@@ -15,7 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.mozi.global.response.ErrorCode.*;
+import static com.mozi.global.response.ErrorCode.FORBIDDEN_USER_EMOJI;
+import static com.mozi.global.response.ErrorCode.NOT_FOUND_USER_EMOJI;
 
 @Tag(name = "UserEmoji", description = "유저 이모지 API")
 public interface UserEmojiSpecification {
