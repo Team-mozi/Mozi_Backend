@@ -1,7 +1,9 @@
 package com.mozi.domain.emoji.controller;
 
 import com.mozi.domain.emoji.controller.dto.request.UserEmojiCreateRequest;
-import com.mozi.domain.emoji.controller.dto.response.*;
+import com.mozi.domain.emoji.controller.dto.response.LatestMyEmojiResponse;
+import com.mozi.domain.emoji.controller.dto.response.UserEmojiDetailResponse;
+import com.mozi.domain.emoji.controller.dto.response.UserEmojiHighlightsResponse;
 import com.mozi.domain.emoji.service.UserEmojiService;
 import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.response.ApiResponse;
@@ -24,18 +26,19 @@ public class UserEmojiController implements UserEmojiSpecification {
     private final UserEmojiService userEmojiService;
 
     @GetMapping("/latest")
-    public ResponseEntity<ApiResponse<LatestMyEmojiResponse>> getLatestUserEmoji() {
-        return ResponseEntity.ok(ApiResponse.success(new LatestMyEmojiResponse()));
+    public ResponseEntity<ApiResponse<LatestMyEmojiResponse>> getLatestUserEmoji(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(ApiResponse.success(userEmojiService.getLatestUserEmoji(userDetails.getUserId())));
     }
 
     @GetMapping("/highlights")
-    public ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights() {
-        return ResponseEntity.ok(ApiResponse.success(new UserEmojiHighlightsResponse()));
+    public ResponseEntity<ApiResponse<UserEmojiHighlightsResponse>> getUserEmojiHighlights(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long currentUserId = userDetails.getUserId();
+        return ResponseEntity.ok(ApiResponse.success(userEmojiService.getUserEmojiHighlights(currentUserId)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserEmojiDetailResponse>> getUserEmojiDetail(@PathVariable("id") Long userEmojiId) {
-        return ResponseEntity.ok(ApiResponse.success(new UserEmojiDetailResponse()));
+        return ResponseEntity.ok(ApiResponse.success(userEmojiService.getUserEmojiDetail(userEmojiId)));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

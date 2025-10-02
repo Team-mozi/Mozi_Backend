@@ -21,7 +21,7 @@ public class EmojiHighlightsResponse {
         this.representativeEmojis = representativeEmojis;
     }
 
-    public static EmojiHighlightsResponse from(List<RandomUserEmojiResponse> randomEmojis, List<RepresentativeEmojiResponse> representativeEmojis) {
+    public static EmojiHighlightsResponse of(List<RandomUserEmojiResponse> randomEmojis, List<RepresentativeEmojiResponse> representativeEmojis) {
         return EmojiHighlightsResponse.builder()
             .randomEmojis(randomEmojis)
             .representativeEmojis(representativeEmojis)

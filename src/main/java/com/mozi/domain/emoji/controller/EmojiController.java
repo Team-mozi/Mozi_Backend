@@ -27,6 +27,6 @@ public class EmojiController implements EmojiSpecification {
 
     @GetMapping("/highlights")
     public ResponseEntity<ApiResponse<EmojiHighlightsResponse>> getEmojiHighlights() {
-        return ResponseEntity.ok(ApiResponse.success());
+        return ResponseEntity.ok(ApiResponse.success(emojiService.getEmojiHighlights()));
     }
 }
