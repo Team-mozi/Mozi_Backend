@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -51,6 +50,7 @@ public class UserService {
         return savedUser.getId();
     }
 
+    @Transactional
     public void sendVerificationEmail(EmailVerificationRequest request) {
         if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
@@ -60,6 +60,7 @@ public class UserService {
         mailSendService.sendAuthEmail(request.getEmail(), title, "mail/verificationCode");
     }
 
+    @Transactional
     public void verifyEmail(EmailVerificationConfirmRequest request) {
         String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
 
@@ -70,6 +71,7 @@ public class UserService {
         redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
     }
 
+    @Transactional
     public void sendPasswordResetEmail(EmailVerificationRequest request) {
         if (!userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.NOT_FOUND_MEMBER);
@@ -115,6 +117,7 @@ public class UserService {
         return jwtUtil.createAccessToken(email);
     }
 
+    @Transactional(readOnly = true)
     public NicknameExistsResponse checkNicknameDuplicate(String nickname) {
         boolean exists = userRepository.existsByNicknameAndActivatedTrue(nickname);
         return NicknameExistsResponse.of(exists);
