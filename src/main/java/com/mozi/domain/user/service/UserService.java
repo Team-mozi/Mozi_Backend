@@ -82,6 +82,22 @@ public class UserService {
     }
 
     @Transactional
+    public void resetPassword(PasswordResetRequest request) {
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
+
+        if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
+            throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
+        }
+
+        User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
+
+        redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
+    }
+
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));

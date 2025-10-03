@@ -65,7 +65,7 @@ public class UserController implements UserSpecification{
 
     @PostMapping("/password-reset/confirm")
     public ResponseEntity<ApiResponse<Void>> resetPassword(@RequestBody @Valid PasswordResetRequest request) {
-        // TODO: 비밀번호 재설정 로직 구현
+        userService.resetPassword(request);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
