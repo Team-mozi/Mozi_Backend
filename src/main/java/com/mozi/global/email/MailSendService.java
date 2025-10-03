@@ -27,20 +27,20 @@ public class MailSendService {
         return String.valueOf((int) (Math.random() * (900000)) + 100000);
     }
 
-    public void sendEmail(String toEmail) {
-        String title = "Mozi 회원가입 인증 이메일 입니다.";
+    public void sendAuthEmail(String toEmail, String title, String templateName) {
         String authCode = createAuthCode();
 
         try {
-            MimeMessage emailForm = createEmailForm(toEmail, title, authCode);
+            MimeMessage emailForm = createEmailForm(toEmail, title, templateName, authCode);
             mailSender.send(emailForm);
         } catch (MessagingException e) {
             throw new BusinessException(ErrorCode.EMAIL_SEND_FAILED);
         }
-        redisService.setValuesWithTimeout(AUTH_CODE_PREFIX + toEmail, authCode, 1000 * 60 * 5);
+
+        redisService.setValuesWithTimeout(AUTH_CODE_PREFIX + toEmail, authCode, 300);
     }
 
-    private MimeMessage createEmailForm(String toEmail, String title, String authCode) throws MessagingException {
+    private MimeMessage createEmailForm(String toEmail, String title, String templateName, String authCode) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
         message.setSubject(title);
@@ -49,7 +49,7 @@ public class MailSendService {
         Context context = new Context();
         context.setVariable("authCode", authCode);
 
-        String htmlContent = templateEngine.process("mail/verificationCode", context);
+        String htmlContent = templateEngine.process(templateName, context);
         message.setText(htmlContent, "utf-8", "html");
 
         return message;

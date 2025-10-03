@@ -52,12 +52,12 @@ public class UserService {
     }
 
     public void sendVerificationEmail(EmailVerificationRequest request) {
-
         if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
         }
 
-        mailSendService.sendEmail(request.getEmail());
+        String title = "Mozi 회원가입 인증 이메일 입니다.";
+        mailSendService.sendAuthEmail(request.getEmail(), title, "mail/verificationCode");
     }
 
     public void verifyEmail(EmailVerificationConfirmRequest request) {
@@ -71,12 +71,12 @@ public class UserService {
     }
 
     public void sendPasswordResetEmail(EmailVerificationRequest request) {
-
         if (!userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
-        mailSendService.sendEmail(request.getEmail());
+        String title = "Mozi 비밀번호 재설정 인증 이메일 입니다.";
+        mailSendService.sendAuthEmail(request.getEmail(), title, "mail/passwordResetCode");
     }
 
     @Transactional
