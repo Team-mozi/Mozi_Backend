@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -51,21 +50,49 @@ public class UserService {
         return savedUser.getId();
     }
 
+    @Transactional
     public void sendVerificationEmail(EmailVerificationRequest request) {
-
         if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
         }
 
-        mailSendService.sendEmail(request.getEmail());
+        String title = "Mozi 회원가입 인증 이메일 입니다.";
+        mailSendService.sendAuthEmail(request.getEmail(), title, "mail/verificationCode");
     }
 
+    @Transactional
     public void verifyEmail(EmailVerificationConfirmRequest request) {
         String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
 
         if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
             throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
         }
+
+        redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
+    }
+
+    @Transactional
+    public void sendPasswordResetEmail(EmailVerificationRequest request) {
+        if (!userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_MEMBER);
+        }
+
+        String title = "Mozi 비밀번호 재설정 인증 이메일 입니다.";
+        mailSendService.sendAuthEmail(request.getEmail(), title, "mail/passwordResetCode");
+    }
+
+    @Transactional
+    public void resetPassword(PasswordResetRequest request) {
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
+
+        if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
+            throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
+        }
+
+        User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
+
+        user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
 
         redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
     }
@@ -106,6 +133,7 @@ public class UserService {
         return jwtUtil.createAccessToken(email);
     }
 
+    @Transactional(readOnly = true)
     public NicknameExistsResponse checkNicknameDuplicate(String nickname) {
         boolean exists = userRepository.existsByNicknameAndActivatedTrue(nickname);
         return NicknameExistsResponse.of(exists);

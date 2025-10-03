@@ -46,6 +46,10 @@ public class User extends BaseEntity {
         this.refreshToken = null;
     }
 
+    public void updatePassword(String encode) {
+        this.password = encode;
+    }
+
     protected User() {}
 
     @Builder
