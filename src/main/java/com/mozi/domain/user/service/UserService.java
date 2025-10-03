@@ -70,6 +70,15 @@ public class UserService {
         redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
     }
 
+    public void sendPasswordResetEmail(EmailVerificationRequest request) {
+
+        if (!userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_MEMBER);
+        }
+
+        mailSendService.sendEmail(request.getEmail());
+    }
+
     @Transactional
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
