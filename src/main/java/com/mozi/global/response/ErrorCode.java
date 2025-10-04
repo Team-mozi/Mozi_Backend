@@ -23,7 +23,9 @@ public enum ErrorCode {
 
     // 이모지
     NOT_FOUND_USER_EMOJI("E001", HttpStatus.NOT_FOUND, "존재하지 않는 유저 이모지입니다."),
-    FORBIDDEN_USER_EMOJI("E002", HttpStatus.FORBIDDEN, "본인 이모지만 삭제할 수 있습니다.");
+    FORBIDDEN_USER_EMOJI("E002", HttpStatus.FORBIDDEN, "본인 이모지만 삭제할 수 있습니다."),
+    NOT_FOUND_COMMENT("E003",HttpStatus.NOT_FOUND, "존재하지 않는 댓글 입니다." ),
+    FORBIDDEN_COMMENT_DELETE("E004",HttpStatus.FORBIDDEN,"본인 댓글만 삭제할 수 있습니다." );
 
     private final String code;
     private final HttpStatus status;
