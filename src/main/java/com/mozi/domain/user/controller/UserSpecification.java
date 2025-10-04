@@ -32,15 +32,19 @@ public interface UserSpecification {
     @Operation(summary = "소셜 로그인", description = "카카오/애플 소셜 계정을 이용해 로그인을 수행합니다.")
     ResponseEntity<ApiResponse<LoginResponse>> socialLogin(SocialLoginRequest request);
 
+    @ApiErrorCodeExamples({CONFLICT_REGISTER})
     @Operation(summary = "이메일 인증 코드 발송", description = "회원가입을 위해 이메일로 인증 코드를 발송합니다.")
     ResponseEntity<ApiResponse<Void>> sendVerificationEmail(EmailVerificationRequest request);
 
+    @ApiErrorCodeExamples({EMAIL_VERIFICATION_FAILED})
     @Operation(summary = "이메일 인증 코드 확인", description = "이메일로 발송된 인증 코드를 확인하여 인증을 완료합니다.")
     ResponseEntity<ApiResponse<Void>> confirmVerificationEmail(EmailVerificationConfirmRequest request);
 
+    @ApiErrorCodeExamples({NOT_FOUND_MEMBER})
     @Operation(summary = "비밀번호 재설정 이메일 발송", description = "비밀번호 재설정을 위해 이메일로 인증 코드를 발송합니다.")
     ResponseEntity<ApiResponse<Void>> sendPasswordResetEmail(EmailVerificationRequest request);
 
+    @ApiErrorCodeExamples({EMAIL_VERIFICATION_FAILED, NOT_FOUND_MEMBER})
     @Operation(summary = "비밀번호 재설정", description = "이메일 인증 후, 새로운 비밀번호로 재설정합니다.")
     ResponseEntity<ApiResponse<Void>> resetPassword(PasswordResetRequest request);
 
