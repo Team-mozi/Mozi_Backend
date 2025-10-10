@@ -63,8 +63,14 @@ public class UserController implements UserSpecification{
         return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @PostMapping("/password-reset/confirm")
-    public ResponseEntity<ApiResponse<Void>> resetPassword(@RequestBody @Valid PasswordResetRequest request) {
+    @PostMapping("/password-reset/confirm-email")
+    public ResponseEntity<ApiResponse<Void>> verifyPasswordResetEmail(@Valid @RequestBody EmailVerificationConfirmRequest request) {
+        userService.verifyPasswordResetEmail(request);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @PostMapping("/password-reset/reset")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody PasswordResetRequest request) {
         userService.resetPassword(request);
         return ResponseEntity.ok(ApiResponse.success());
     }

@@ -41,6 +41,8 @@ public class UserService {
 
     private static final String VERIFIED_PREFIX = "Verified_";
 
+    private static final String PW_RESET_VERIFIED_PREFIX = "PwResetVerified_";
+
     @Transactional
     public Long register(RegisterRequest request) {
         String email = request.getEmail();
@@ -96,19 +98,34 @@ public class UserService {
     }
 
     @Transactional
-    public void resetPassword(PasswordResetRequest request) {
-        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
+    public void verifyPasswordResetEmail(EmailVerificationConfirmRequest request) {
+        String email = request.getEmail();
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
 
         if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
             throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
         }
 
-        User user = userRepository.findByEmailAndActivatedTrue(request.getEmail())
+        redisService.deleteValues(AUTH_CODE_PREFIX + email);
+
+        redisService.setValuesWithTimeout(PW_RESET_VERIFIED_PREFIX + email, "true", 180);
+    }
+
+    @Transactional
+    public void resetPassword(PasswordResetRequest request) {
+        String email = request.getEmail();
+
+        String verifiedStatus = redisService.getValues(PW_RESET_VERIFIED_PREFIX + email);
+        if (verifiedStatus == null || !verifiedStatus.equals("true")) {
+            throw new BusinessException(ErrorCode.EMAIL_NOT_VERIFIED);
+        }
+
+        User user = userRepository.findByEmailAndActivatedTrue(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER));
 
         user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
 
-        redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
+        redisService.deleteValues(PW_RESET_VERIFIED_PREFIX + email);
     }
 
     @Transactional
