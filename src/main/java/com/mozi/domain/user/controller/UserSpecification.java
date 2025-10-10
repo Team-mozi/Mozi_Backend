@@ -17,7 +17,7 @@ import static com.mozi.global.response.ErrorCode.*;
 @Tag(name = "User", description = "인증 / 회원 API")
 public interface UserSpecification {
 
-    @ApiErrorCodeExamples({CONFLICT_REGISTER})
+    @ApiErrorCodeExamples({CONFLICT_REGISTER, EMAIL_NOT_VERIFIED})
     @Operation(summary = "회원 가입", description = "회원 정보를 등록합니다.")
     ResponseEntity<ApiResponse<Long>> register(RegisterRequest request);
 
@@ -44,8 +44,12 @@ public interface UserSpecification {
     @Operation(summary = "비밀번호 재설정 이메일 발송", description = "비밀번호 재설정을 위해 이메일로 인증 코드를 발송합니다.")
     ResponseEntity<ApiResponse<Void>> sendPasswordResetEmail(EmailVerificationRequest request);
 
-    @ApiErrorCodeExamples({EMAIL_VERIFICATION_FAILED, NOT_FOUND_MEMBER})
-    @Operation(summary = "비밀번호 재설정", description = "이메일 인증 후, 새로운 비밀번호로 재설정합니다.")
+    @ApiErrorCodeExamples({EMAIL_VERIFICATION_FAILED})
+    @Operation(summary = "비밀번호 재설정 이메일 인증 코드 확인", description = "비밀번호 재설정을 위해 이메일로 발송된 인증 코드를 확인합니다.")
+    ResponseEntity<ApiResponse<Void>> verifyPasswordResetEmail(EmailVerificationConfirmRequest request);
+
+    @ApiErrorCodeExamples({EMAIL_NOT_VERIFIED, NOT_FOUND_MEMBER})
+    @Operation(summary = "비밀번호 재설정", description = "이메일 인증 완료 후, 새로운 비밀번호로 재설정합니다.")
     ResponseEntity<ApiResponse<Void>> resetPassword(PasswordResetRequest request);
 
     @Operation(summary = "닉네임 중복 확인", description = "입력한 닉네임이 사용 가능한지 확인합니다.")
