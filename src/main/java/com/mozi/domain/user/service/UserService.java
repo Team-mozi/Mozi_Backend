@@ -39,14 +39,25 @@ public class UserService {
 
     private static final String AUTH_CODE_PREFIX = "AuthCode_";
 
+    private static final String VERIFIED_PREFIX = "Verified_";
+
     @Transactional
     public Long register(RegisterRequest request) {
+        String email = request.getEmail();
+        String verifiedStatus = redisService.getValues(VERIFIED_PREFIX + email);
+
+        if (verifiedStatus == null || !verifiedStatus.equals("true")) {
+            throw new BusinessException(ErrorCode.EMAIL_NOT_VERIFIED);
+        }
 
         if (userRepository.existsByEmailAndActivatedTrue(request.getEmail())) {
             throw new BusinessException(ErrorCode.CONFLICT_REGISTER);
         }
 
         User savedUser = userRepository.save(request.toEntity(passwordEncoder));
+
+        redisService.deleteValues(VERIFIED_PREFIX + email);
+
         return savedUser.getId();
     }
 
@@ -62,13 +73,16 @@ public class UserService {
 
     @Transactional
     public void verifyEmail(EmailVerificationConfirmRequest request) {
-        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + request.getEmail());
+        String email = request.getEmail();
+        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
 
         if (redisAuthCode == null || !redisAuthCode.equals(request.getVerificationCode())) {
             throw new BusinessException(ErrorCode.EMAIL_VERIFICATION_FAILED);
         }
 
         redisService.deleteValues(AUTH_CODE_PREFIX + request.getEmail());
+
+        redisService.setValuesWithTimeout(VERIFIED_PREFIX + email, "true", 600);
     }
 
     @Transactional
