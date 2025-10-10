@@ -68,7 +68,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/spring-app:${{ github.sha }}
             docker stop spring-app || true
             docker rm spring-app || true
-            docker run -d -p 8080:8080 \
+            docker run -d --network host \
               -e SPRING_PROFILES_ACTIVE=prod \
               --name spring-app \
               ${{ secrets.DOCKER_USERNAME }}/spring-app:${{ github.sha }}
