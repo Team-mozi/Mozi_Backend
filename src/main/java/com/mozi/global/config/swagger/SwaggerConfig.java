@@ -65,7 +65,8 @@ public class SwaggerConfig {
                 "/api/users/email-verifications/",
                 "/api/users/reissue",
                 "/api/emojis/highlights",
-                "/api/users/password-reset/"
+                "/api/users/password-reset/",
+                "/api/user-emojis/"
             );
 
             openApi.getPaths().forEach((path, pathItem) -> {
@@ -76,9 +77,16 @@ public class SwaggerConfig {
                         operation.addParametersItem(authHeader);
                     });
                 } else {
-                    pathItem.readOperations().forEach(operation -> {
-                        operation.setSecurity(new ArrayList<>());
-                    });
+                    if (path.matches("/api/user-emojis/.+/comments")) {
+                        Operation getOperation = pathItem.getGet();
+                        if (getOperation != null) {
+                            getOperation.setSecurity(new ArrayList<>());
+                        }
+                    } else {
+                        pathItem.readOperations().forEach(operation -> {
+                            operation.setSecurity(new ArrayList<>());
+                        });
+                    }
                 }
             });
         };
