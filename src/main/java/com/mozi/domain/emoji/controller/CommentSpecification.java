@@ -6,6 +6,7 @@ import com.mozi.global.config.security.CustomUserDetails;
 import com.mozi.global.config.swagger.ApiErrorCodeExamples;
 import com.mozi.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
@@ -22,6 +23,7 @@ public interface CommentSpecification {
                                                     CommentCreateRequest request,
                                                     CustomUserDetails userDetails);
 
+    @SecurityRequirements({})
     @Operation(summary = "댓글 목록 조회", description = "특정 이모지 게시글에 달린 모든 댓글을 조회합니다.")
     ResponseEntity<ApiResponse<List<CommentResponse>>> getComments(Long userEmojiId);
 

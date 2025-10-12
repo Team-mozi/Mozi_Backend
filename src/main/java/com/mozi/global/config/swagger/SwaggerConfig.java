@@ -9,17 +9,13 @@ import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
-import io.swagger.v3.oas.models.media.StringSchema;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -47,49 +43,6 @@ public class SwaggerConfig {
                                 .bearerFormat("JWT")
                         )
                     );
-    }
-
-    @Bean
-    public GlobalOpenApiCustomizer authorizationHeaderCustomizer() {
-        return openApi -> {
-            Parameter authHeader = new Parameter()
-                .name("Authorization")
-                .description("JWT Access Token")
-                .in("header")
-                .required(false)
-                .schema(new StringSchema().example("Bearer <your_token>"));
-
-            List<String> excludedPaths = List.of(
-                "/api/users/register",
-                "/api/users/login",
-                "/api/users/email-verifications/",
-                "/api/users/reissue",
-                "/api/emojis/highlights",
-                "/api/users/password-reset/",
-                "/api/user-emojis/"
-            );
-
-            openApi.getPaths().forEach((path, pathItem) -> {
-                boolean excluded = excludedPaths.stream().anyMatch(path::startsWith);
-
-                if (!excluded) {
-                    pathItem.readOperations().forEach(operation -> {
-                        operation.addParametersItem(authHeader);
-                    });
-                } else {
-                    if (path.matches("/api/user-emojis/.+/comments")) {
-                        Operation getOperation = pathItem.getGet();
-                        if (getOperation != null) {
-                            getOperation.setSecurity(new ArrayList<>());
-                        }
-                    } else {
-                        pathItem.readOperations().forEach(operation -> {
-                            operation.setSecurity(new ArrayList<>());
-                        });
-                    }
-                }
-            });
-        };
     }
 
     @Bean
