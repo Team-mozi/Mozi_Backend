@@ -16,8 +16,8 @@ public class RegisterRequest {
     private String email;
 
     @Schema(description = "비밀번호", example = "Password123!")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$",
-            message = "비밀번호는 숫자, 영문, 특수문자를 혼합하여 8자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$",
+        message = "비밀번호는 숫자, 대소문자영문, 특수문자를 혼합하여 8자 이상이어야 합니다.")
     @NotBlank
     private String password;
 
